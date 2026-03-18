@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小贾私房菜</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --primary-color: #3b82f6;
+      --primary-light: #60a5fa;
+      --secondary-color: #f97316;
+      --background-color: #f8fafc;
+      --card-background: rgba(255, 255, 255, 0.7);
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+      background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    
+    .glass {
+      background: var(--card-background);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    }
+    
+    /* 手机端卡片效果增强 */
+    @media (max-width: 640px) {
+      .glass {
+        /* 增加不透明度以确保在不支持backdrop-filter的浏览器中也能看清内容 */
+        background: rgba(255, 255, 255, 0.85);
+        /* 增强阴影效果以提升层次感 */
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        /* 增加边框以明确卡片边界 */
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      
+      /* 确保所有卡片元素在手机端都有足够的间距 */
+      .food-card, #todaySpecial, header, .glass {
+        margin-bottom: 1rem;
+        padding: 1rem;
+      }
+    }
+    
+    .category-btn {
+      transition: all 0.3s ease;
+    }
+    
+    .category-btn:hover, .category-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .food-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+    
+    .food-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(31, 38, 135, 0.15);
+    }
+    
+    .food-card:nth-child(1) { animation-delay: 0.1s; }
+    .food-card:nth-child(2) { animation-delay: 0.2s; }
+    .food-card:nth-child(3) { animation-delay: 0.3s; }
+    .food-card:nth-child(4) { animation-delay: 0.4s; }
+    .food-card:nth-child(5) { animation-delay: 0.5s; }
+    .food-card:nth-child(6) { animation-delay: 0.6s; }
+    .food-card:nth-child(7) { animation-delay: 0.7s; }
+    .food-card:nth-child(8) { animation-delay: 0.8s; }
+    
+    /* 手机端图片适配 */
+    @media (max-width: 640px) {
+      .food-card img {
+        height: 200px; /* 调整为合适的高度 */
+        object-fit: cover;
+      }
+      
+      /* 今日推荐图片适配 */
+      #todaySpecial img {
+        height: 200px; /* 调整为合适的高度 */
+        object-fit: cover;
+      }
+      
+      /* 模态框图片适配 */
+      .modal-content img {
+        height: 240px; /* 调整为合适的高度 */
+        object-fit: cover;
+      }
+      
+      /* 编辑按钮适配 */
+      #editBtn {
+        padding: 0.5rem 1rem; /* 减小内边距 */
+        font-size: 0.875rem; /* 减小字体大小 */
+      }
+      
+      /* 编辑按钮图标适配 */
+      #editBtn i {
+        width: 16px; /* 减小图标大小 */
+        height: 16px;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal.active {
+      display: flex;
+      opacity: 1;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      overflow-y: auto;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+    
+    .edit-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .edit-modal.active {
+      display: flex;
+      opacity: 1;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      outline: none;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #ea580c;
+      transform: translateY(-2px);
+    }
+    
+    .btn-danger {
+      background-color: #ef4444;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #dc2626;
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .badge-green {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    
+    .badge-purple {
+      background-color: #f3e8ff;
+      color: #7e22ce;
+    }
+    
+    .badge-yellow {
+      background-color: #fef9c3;
+      color: #854d0e;
+    }
+    
+    .badge-pink {
+      background-color: #fce7f3;
+      color: #be185d;
+    }
+    
+    .badge-cyan {
+      background-color: #cffafe;
+      color: #0e7490;
+    }
+    
+    .badge-orange {
+      background-color: #ffedd5;
+      color: #c2410c;
+    }
+    
+    .badge-blue {
+      background-color: #dbeafe;
+      color: #1d4ed8;
+    }
+    
+    .badge-red {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+    
+    .search-container {
+      position: relative;
+    }
+    
+    .search-container input {
+      padding-left: 2.5rem;
+    }
+    
+    .search-container i {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+    
+    .today-special {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .today-special::before {
+      content: '今日推荐';
+      position: absolute;
+      top: 1rem;
+      left: -2rem;
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 0.25rem 3rem;
+      transform: rotate(-45deg);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 640px) {
+      .food-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .category-scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .category-scroll::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .category-btn {
+        display: inline-block;
+        margin-right: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="p-4 md:p-6">
+  <div class="container mx-auto max-w-6xl">
+    <!-- Header -->
+    <header class="glass rounded-xl p-4 mb-6">
+      <div class="flex items-center gap-3">
+        <h1 class="text-lg font-bold text-primary-600 whitespace-nowrap">小贾私房菜</h1>
+        
+        <div class="flex-1 relative">
+          <input type="text" id="searchInput" placeholder="搜索菜品..." class="w-full pl-7 pr-2 py-1.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 text-xs">
+          <i data-lucide="search" class="absolute left-2 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400"></i>
+        </div>
+        
+        <button id="editBtn" class="btn btn-outline flex items-center text-xs py-1 px-2 whitespace-nowrap">
+          <i data-lucide="edit-2" class="mr-1 w-3 h-3"></i>
+          编辑
+        </button>
+      </div>
+    </header>
+    
+    <!-- Categories -->
+    <div class="glass rounded-xl p-4 mb-6">
+      <h3 class="text-xl font-semibold mb-4">菜品分类</h3>
+      <div class="category-scroll flex flex-wrap gap-2">
+        <button class="category-btn active px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-primary-500 hover:text-white transition-all" data-category="all">全部</button>
+        <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-primary-500 hover:text-white transition-all" data-category="红烧">红烧</button>
+        <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-primary-500 hover:text-white transition-all" data-category="凉拌">凉拌</button>
+        <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-primary-500 hover:text-white transition-all" data-category="炒菜">炒菜</button>
+        <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-primary-500 hover:text-white transition-all" data-category="卤菜">卤菜</button>
+        <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-primary-500 hover:text-white transition-all" data-category="炖菜">炖菜</button>
+        <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-primary-500 hover:text-white transition-all" data-category="蒸菜">蒸菜</button>
+        <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-primary-500 hover:text-white transition-all" data-category="主食">主食</button>
+      </div>
+    </div>
+    
+    <!-- Today's Special -->
+    <div id="todaySpecial" class="glass rounded-xl p-6 mb-6 today-special">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="w-full md:w-1/3 mb-4 md:mb-0">
+          <img id="specialImage" src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bf5208e501584d5c9e955237c14d94ac~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963135&x-signature=VvRFcfYNN9ePKTBXiI24eyHYh2E%3D" alt="今日推荐" class="w-full h-48 object-cover rounded-lg">
+        </div>
+        <div class="w-full md:w-2/3 md:pl-6">
+          <h2 class="text-2xl font-bold mb-2" id="specialName">香煎五花肉</h2>
+          <div class="flex items-center mb-4">
+            <span class="badge badge-orange mr-2" id="specialCategory">红烧</span>
+            <span class="text-xl font-bold text-secondary-500" id="specialPrice">¥38.00</span>
+          </div>
+          <p class="text-gray-600 mb-4" id="specialDescription">精选上等五花肉，经过慢火煎制，外焦里嫩，肥而不腻，香气四溢。搭配特制蘸料，口感丰富，是本店的招牌菜品之一。</p>
+          <button id="viewSpecialBtn" class="btn btn-primary">查看详情</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Food Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 food-grid" id="foodGrid">
+      <!-- Food cards will be generated here -->
+    </div>
+  </div>
+  
+  <!-- Food Detail Modal -->
+  <div id="foodModal" class="modal">
+    <div class="modal-content glass rounded-xl p-6 max-w-2xl w-full mx-4">
+      <div class="flex justify-between items-start mb-4">
+        <h2 class="text-2xl font-bold" id="modalName">菜品名称</h2>
+        <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      
+      <div class="mb-6">
+        <img id="modalImage" src="" alt="菜品图片" class="w-full h-64 object-cover rounded-lg">
+      </div>
+      
+      <div class="flex items-center mb-4">
+        <span class="badge mr-2" id="modalCategory">分类</span>
+        <span class="text-xl font-bold text-secondary-500" id="modalPrice">¥0.00</span>
+      </div>
+      
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">菜品描述</h3>
+        <p class="text-gray-600" id="modalDescription">菜品描述将显示在这里...</p>
+      </div>
+      
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">主要用料</h3>
+        <ul class="list-disc pl-5 text-gray-600" id="modalIngredients">
+          <!-- Ingredients will be added here -->
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="text-lg font-semibold mb-2">制作过程</h3>
+        <ol class="list-decimal pl-5 text-gray-600" id="modalSteps">
+          <!-- Steps will be added here -->
+        </ol>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Menu Modal -->
+  <div id="editModal" class="edit-modal">
+    <div class="modal-content glass rounded-xl p-6 max-w-2xl w-full mx-4">
+      <div class="flex justify-between items-start mb-4">
+        <h2 class="text-2xl font-bold">编辑菜单</h2>
+        <button id="closeEditModal" class="text-gray-500 hover:text-gray-700">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      
+      <div class="mb-6">
+        <button id="addFoodBtn" class="btn btn-primary mb-4">添加菜品</button>
+        
+        <div id="foodList" class="space-y-4">
+          <!-- Food items for editing will be added here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add/Edit Food Form Modal -->
+  <div id="foodFormModal" class="modal">
+    <div class="modal-content glass rounded-xl p-6 max-w-lg w-full mx-4">
+      <div class="flex justify-between items-start mb-4">
+        <h2 class="text-2xl font-bold" id="formTitle">添加菜品</h2>
+        <button id="closeFoodFormModal" class="text-gray-500 hover:text-gray-700">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      
+      <form id="foodForm">
+        <input type="hidden" id="foodId">
+        
+        <div class="form-group">
+          <label for="foodName">菜品名称</label>
+          <input type="text" id="foodName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="foodCategory">菜品分类</label>
+          <select id="foodCategory" required>
+            <option value="">请选择分类</option>
+            <option value="红烧">红烧</option>
+            <option value="凉拌">凉拌</option>
+            <option value="炒菜">炒菜</option>
+            <option value="卤菜">卤菜</option>
+            <option value="炖菜">炖菜</option>
+            <option value="蒸菜">蒸菜</option>
+            <option value="主食">主食</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="foodPrice">菜品价格</label>
+          <input type="number" id="foodPrice" step="0.01" min="0" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="foodImage">菜品图片URL</label>
+          <input type="url" id="foodImage" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="foodDescription">菜品描述</label>
+          <textarea id="foodDescription" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="foodIngredients">主要用料 (用逗号分隔)</label>
+          <input type="text" id="foodIngredients" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="foodSteps">制作过程 (用分号分隔)</label>
+          <textarea id="foodSteps" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="flex items-center">
+            <input type="checkbox" id="isSpecial" class="mr-2">
+            设为今日推荐
+          </label>
+        </div>
+        
+        <div class="flex justify-end space-x-4 mt-6">
+          <button type="button" id="cancelFoodForm" class="btn btn-outline">取消</button>
+          <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // 初始化Lucide图标
+    lucide.createIcons();
+    
+    // 模拟菜品数据
+    let foods = [
+      {
+        id: 1,
+        name: "香煎五花肉",
+        category: "红烧",
+        price: 38.00,
+        image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bf5208e501584d5c9e955237c14d94ac~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963135&x-signature=VvRFcfYNN9ePKTBXiI24eyHYh2E%3D",
+        description: "精选上等五花肉，经过慢火煎制，外焦里嫩，肥而不腻，香气四溢。搭配特制蘸料，口感丰富，是本店的招牌菜品之一。",
+        ingredients: ["五花肉", "姜", "蒜", "酱油", "料酒", "白糖", "盐", "胡椒粉"],
+        steps: [
+          "五花肉洗净，切成厚片",
+          "锅中放入少量油，放入五花肉片",
+          "小火煎至两面金黄",
+          "加入姜蒜爆香",
+          "加入酱油、料酒、白糖、盐、胡椒粉调味",
+          "翻炒均匀，收汁即可"
+        ],
+        isSpecial: true
+      },
+      {
+        id: 2,
+        name: "彩椒炒鸡丁",
+        category: "炒菜",
+        price: 32.00,
+        image: "https://p6-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/64168cce40f545d78f582c3243235fa6~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963135&x-signature=sp%2Fc83C8IdFRC9mZkSQIFE60Vss%3D",
+        description: "嫩滑的鸡肉搭配新鲜彩椒，色彩鲜艳，营养丰富。鸡肉嫩滑多汁，彩椒爽脆可口，是一道色香味俱全的家常炒菜。",
+        ingredients: ["鸡胸肉", "红彩椒", "黄彩椒", "绿彩椒", "姜", "蒜", "酱油", "料酒", "淀粉", "盐", "糖"],
+        steps: [
+          "鸡胸肉切成丁，用盐、料酒、淀粉腌制15分钟",
+          "彩椒洗净，切成小块",
+          "锅中放油，爆香姜蒜",
+          "放入鸡丁炒至变色",
+          "加入彩椒翻炒均匀",
+          "加入酱油、糖调味",
+          "炒至彩椒断生即可"
+        ],
+        isSpecial: false
+      },
+      {
+        id: 3,
+        name: "清蒸豆腐",
+        category: "蒸菜",
+        price: 22.00,
+        image: "https://p6-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/0c64b1edbca9493abc959a9002ea2063~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963138&x-signature=ij04WDdCNFfb7Mpdrkd8Z%2FYjDi8%3D",
+        description: "选用优质嫩豆腐，清蒸后淋上特制的酱汁，口感滑嫩，味道鲜美。豆腐富含蛋白质，营养健康，适合各类人群食用。",
+        ingredients: ["嫩豆腐", "葱", "姜", "蒜", "酱油", "生抽", "香油", "盐"],
+        steps: [
+          "豆腐切成大块，放入盘中",
+          "锅中水烧开，放入豆腐蒸5分钟",
+          "取出，倒掉盘中的水",
+          "葱切丝，姜蒜切末",
+          "将酱油、生抽、盐混合成酱汁",
+          "将酱汁淋在豆腐上",
+          "撒上葱姜蒜，淋上香油即可"
+        ],
+        isSpecial: false
+      },
+      {
+        id: 4,
+        name: "蔬菜沙拉",
+        category: "凉拌",
+        price: 26.00,
+        image: "https://cdn.jsdelivr.net/gh/jyh318/image-jyh/img/%E8%8F%9C%E5%93%81%E5%9B%BE%E7%89%87%E5%8F%8A%E7%AE%80%E4%BB%8B%E7%94%9F%E6%88%90.png",
+        description: "新鲜的混合蔬菜，搭配特制沙拉酱，清爽可口，营养丰富。适合减肥人士和健康饮食爱好者。",
+        ingredients: ["生菜", "黄瓜", "胡萝卜", "小番茄", "橄榄油", "柠檬汁", "蜂蜜", "盐", "黑胡椒"],
+        steps: [
+          "生菜洗净撕成小块",
+          "黄瓜、胡萝卜切成条",
+          "小番茄对半切",
+          "将所有蔬菜放入大碗中",
+          "橄榄油、柠檬汁、蜂蜜、盐、黑胡椒混合成沙拉酱",
+          "将沙拉酱淋在蔬菜上",
+          "轻轻拌匀即可"
+        ],
+        isSpecial: false
+      },
+      {
+        id: 5,
+        name: "蔬菜肉汤",
+        category: "炖菜",
+        price: 30.00,
+        image: "https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/5cd624d7b11f4592b801a58744fb2733~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963150&x-signature=Ny6GIotn55BKrd5Zk6T04GCUPmw%3D",
+        description: "营养丰富的蔬菜肉汤，选用多种新鲜蔬菜和优质瘦肉，慢炖而成。汤清味鲜，富含维生素和蛋白质，是一道健康美味的汤品。",
+        ingredients: ["猪瘦肉", "胡萝卜", "土豆", "西兰花", "洋葱", "姜", "蒜", "料酒", "盐", "鸡精"],
+        steps: [
+          "瘦肉切成小块，焯水去血水",
+          "胡萝卜、土豆切成块",
+          "西兰花切成小朵",
+          "洋葱切丝",
+          "锅中放油，爆香姜蒜",
+          "放入瘦肉煸炒",
+          "加入料酒",
+          "加入清水，大火烧开",
+          "转小火炖30分钟",
+          "加入胡萝卜、土豆继续炖20分钟",
+          "加入西兰花、洋葱炖5分钟",
+          "加盐、鸡精调味即可"
+        ],
+        isSpecial: false
+      },
+      {
+        id: 6,
+        name: "彩椒炒饭",
+        category: "主食",
+        price: 28.00,
+        image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/1d10cddd4a754da0918a8ccf2ae73e64~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963150&x-signature=gR6nurIIrCCpmaC090q695SX%2FqY%3D",
+        description: "香喷喷的彩椒炒饭，米饭粒粒分明，搭配鲜艳的彩椒和其他配料，色彩诱人，味道丰富。是一道简单又美味的主食。",
+        ingredients: ["米饭", "红彩椒", "黄彩椒", "青豆", "玉米粒", "鸡蛋", "葱", "蒜", "盐", "生抽"],
+        steps: [
+          "彩椒切成小丁",
+          "鸡蛋打散炒熟盛出",
+          "锅中放油，爆香蒜末",
+          "放入彩椒、青豆、玉米粒翻炒",
+          "加入米饭翻炒均匀",
+          "加入炒好的鸡蛋",
+          "加入盐、生抽调味",
+          "翻炒均匀，撒上葱花即可"
+        ],
+        isSpecial: false
+      },
+      {
+        id: 7,
+        name: "清蒸鱼",
+        category: "蒸菜",
+        price: 48.00,
+        image: "https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/ebe94b4496c647a7a00ba1e09a7a5261~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963150&x-signature=DgMshkPWbu0WLvzU7ruGzVvxjp4%3D",
+        description: "选用新鲜活鱼，清蒸后保持了鱼肉的鲜嫩口感，搭配葱姜和特制酱汁，味道鲜美。鱼肉富含优质蛋白质，营养丰富。",
+        ingredients: ["鱼", "葱", "姜", "蒜", "酱油", "生抽", "料酒", "盐", "食用油"],
+        steps: [
+          "鱼洗净，在两面划几刀",
+          "用盐、料酒腌制10分钟",
+          "葱切丝，姜切丝",
+          "将鱼放在盘中，撒上一半的葱姜丝",
+          "锅中水烧开，放入鱼蒸8-10分钟",
+          "取出，倒掉盘中的水",
+          "撒上剩余的葱姜丝",
+          "锅中放油烧热，浇在鱼上",
+          "淋上酱油、生抽即可"
+        ],
+        isSpecial: false
+      },
+      {
+        id: 8,
+        name: "饺子",
+        category: "主食",
+        price: 36.00,
+        image: "https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/de2b60f453fb4731a423a24f0948b140~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963150&x-signature=dFeVVL9x29HKC%2Ba8NUmv3iOOD4U%3D",
+        description: "手工包制的饺子，皮薄馅大，口感丰富。馅料选用新鲜食材，味道鲜美。可搭配醋、辣椒油等调料食用，是传统的中式主食。",
+        ingredients: ["面粉", "猪肉", "白菜", "葱", "姜", "蒜", "酱油", "盐", "香油", "花椒粉"],
+        steps: [
+          "面粉加水和成面团，醒发30分钟",
+          "猪肉剁成肉末",
+          "白菜切碎，挤出水份",
+          "葱姜蒜切末",
+          "将肉末、白菜、葱姜蒜混合",
+          "加入酱油、盐、香油、花椒粉调味",
+          "面团分成小剂子，擀成饺子皮",
+          "包入馅料，捏成饺子",
+          "锅中水烧开，放入饺子煮熟即可"
+        ],
+        isSpecial: false
+      }
+    ];
+    
+    // 当前选中的分类
+    let currentCategory = 'all';
+    
+    // 当前搜索关键词
+    let currentSearch = '';
+    
+    // 初始化页面
+    function initPage() {
+      renderFoodGrid();
+      renderTodaySpecial();
+      setupEventListeners();
+    }
+    
+    // 渲染菜品网格
+    function renderFoodGrid() {
+      const foodGrid = document.getElementById('foodGrid');
+      foodGrid.innerHTML = '';
+      
+      // 控制今日推荐卡片的显示/隐藏
+      const todaySpecial = document.getElementById('todaySpecial');
+      if (currentCategory !== 'all' || currentSearch !== '') {
+        todaySpecial.style.display = 'none';
+      } else {
+        todaySpecial.style.display = 'block';
+      }
+      
+      const filteredFoods = foods.filter(food => {
+        const matchesCategory = currentCategory === 'all' || food.category === currentCategory;
+        const matchesSearch = currentSearch === '' || food.name.toLowerCase().includes(currentSearch.toLowerCase()) || food.description.toLowerCase().includes(currentSearch.toLowerCase());
+        return matchesCategory && matchesSearch && !food.isSpecial;
+      });
+      
+      filteredFoods.forEach(food => {
+        const foodCard = document.createElement('div');
+        foodCard.className = 'food-card glass rounded-xl overflow-hidden';
+        foodCard.dataset.id = food.id;
+        
+        const badgeClass = getBadgeClass(food.category);
+        
+        foodCard.innerHTML = `
+          <div class="relative">
+            <img src="${food.image}" alt="${food.name}" class="w-full h-48 object-cover">
+            <span class="absolute top-2 right-2 bg-white text-secondary-500 font-bold px-2 py-1 rounded">¥${food.price.toFixed(2)}</span>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="text-lg font-semibold">${food.name}</h3>
+              <span class="badge ${badgeClass}">${food.category}</span>
+            </div>
+            <p class="text-gray-600 text-sm line-clamp-2">${food.description}</p>
+          </div>
+        `;
+        
+        foodGrid.appendChild(foodCard);
+        
+        // 添加点击事件
+        foodCard.addEventListener('click', () => showFoodDetail(food.id));
+      });
+    }
+    
+    // 渲染今日推荐
+    function renderTodaySpecial() {
+      const specialFood = foods.find(food => food.isSpecial) || foods[0];
+      
+      document.getElementById('specialImage').src = specialFood.image;
+      document.getElementById('specialName').textContent = specialFood.name;
+      document.getElementById('specialCategory').textContent = specialFood.category;
+      document.getElementById('specialCategory').className = `badge ${getBadgeClass(specialFood.category)} mr-2`;
+      document.getElementById('specialPrice').textContent = `¥${specialFood.price.toFixed(2)}`;
+      document.getElementById('specialDescription').textContent = specialFood.description;
+      
+      document.getElementById('viewSpecialBtn').onclick = () => showFoodDetail(specialFood.id);
+    }
+    
+    // 设置事件监听器
+    function setupEventListeners() {
+      // 分类按钮点击事件
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.dataset.category;
+          renderFoodGrid();
+        });
+      });
+      
+      // 搜索框输入事件
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        currentSearch = e.target.value;
+        renderFoodGrid();
+      });
+      
+      // 编辑按钮点击事件
+      document.getElementById('editBtn').addEventListener('click', () => {
+        showEditModal();
+      });
+      
+      // 关闭菜品详情模态框
+      document.getElementById('closeModal').addEventListener('click', () => {
+        hideFoodModal();
+      });
+      
+      // 关闭编辑模态框
+      document.getElementById('closeEditModal').addEventListener('click', () => {
+        hideEditModal();
+      });
+      
+      // 关闭菜品表单模态框
+      document.getElementById('closeFoodFormModal').addEventListener('click', () => {
+        hideFoodFormModal();
+      });
+      
+      // 取消菜品表单
+      document.getElementById('cancelFoodForm').addEventListener('click', () => {
+        hideFoodFormModal();
+      });
+      
+      // 提交菜品表单
+      document.getElementById('foodForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveFood();
+      });
+      
+      // 添加菜品按钮
+      document.getElementById('addFoodBtn').addEventListener('click', () => {
+        showFoodFormModal();
+      });
+      
+      // 点击模态框背景关闭模态框
+      document.getElementById('foodModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('foodModal')) {
+          hideFoodModal();
+        }
+      });
+      
+      document.getElementById('editModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('editModal')) {
+          hideEditModal();
+        }
+      });
+      
+      document.getElementById('foodFormModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('foodFormModal')) {
+          hideFoodFormModal();
+        }
+      });
+    }
+    
+    // 显示菜品详情
+    function showFoodDetail(foodId) {
+      const food = foods.find(f => f.id === foodId);
+      if (!food) return;
+      
+      document.getElementById('modalName').textContent = food.name;
+      document.getElementById('modalImage').src = food.image;
+      document.getElementById('modalCategory').textContent = food.category;
+      document.getElementById('modalCategory').className = `badge ${getBadgeClass(food.category)} mr-2`;
+      document.getElementById('modalPrice').textContent = `¥${food.price.toFixed(2)}`;
+      document.getElementById('modalDescription').textContent = food.description;
+      
+      const ingredientsList = document.getElementById('modalIngredients');
+      ingredientsList.innerHTML = '';
+      food.ingredients.forEach(ingredient => {
+        const li = document.createElement('li');
+        li.textContent = ingredient;
+        ingredientsList.appendChild(li);
+      });
+      
+      const stepsList = document.getElementById('modalSteps');
+      stepsList.innerHTML = '';
+      food.steps.forEach(step => {
+        const li = document.createElement('li');
+        li.textContent = step;
+        stepsList.appendChild(li);
+      });
+      
+      document.getElementById('foodModal').classList.add('active');
+    }
+    
+    // 隐藏菜品详情模态框
+    function hideFoodModal() {
+      document.getElementById('foodModal').classList.remove('active');
+    }
+    
+    // 显示编辑模态框
+    function showEditModal() {
+      const foodList = document.getElementById('foodList');
+      foodList.innerHTML = '';
+      
+      foods.forEach(food => {
+        const foodItem = document.createElement('div');
+        foodItem.className = 'glass rounded-lg p-4 flex justify-between items-center';
+        
+        foodItem.innerHTML = `
+          <div class="flex items-center">
+            <img src="${food.image}" alt="${food.name}" class="w-12 h-12 object-cover rounded mr-4">
+            <div>
+              <h4 class="font-semibold">${food.name}</h4>
+              <p class="text-sm text-gray-600">${food.category} - ¥${food.price.toFixed(2)}</p>
+            </div>
+          </div>
+          <div class="flex space-x-2">
+            <button class="edit-food-btn p-2 text-primary-500 hover:text-primary-700" data-id="${food.id}">
+              <i data-lucide="edit-2" class="w-5 h-5"></i>
+            </button>
+            <button class="delete-food-btn p-2 text-red-500 hover:text-red-700" data-id="${food.id}">
+              <i data-lucide="trash-2" class="w-5 h-5"></i>
+            </button>
+          </div>
+        `;
+        
+        foodList.appendChild(foodItem);
+      });
+      
+      // 重新渲染Lucide图标
+      lucide.createIcons();
+      
+      // 添加编辑按钮点击事件
+      document.querySelectorAll('.edit-food-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const foodId = parseInt(btn.dataset.id);
+          editFood(foodId);
+        });
+      });
+      
+      // 添加删除按钮点击事件
+      document.querySelectorAll('.delete-food-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const foodId = parseInt(btn.dataset.id);
+          deleteFood(foodId);
+        });
+      });
+      
+      document.getElementById('editModal').classList.add('active');
+    }
+    
+    // 隐藏编辑模态框
+    function hideEditModal() {
+      document.getElementById('editModal').classList.remove('active');
+    }
+    
+    // 显示菜品表单模态框
+    function showFoodFormModal(foodId = null) {
+      const formTitle = document.getElementById('formTitle');
+      const foodForm = document.getElementById('foodForm');
+      const foodIdInput = document.getElementById('foodId');
+      
+      if (foodId) {
+        // 编辑现有菜品
+        formTitle.textContent = '编辑菜品';
+        const food = foods.find(f => f.id === foodId);
+        
+        foodIdInput.value = food.id;
+        document.getElementById('foodName').value = food.name;
+        document.getElementById('foodCategory').value = food.category;
+        document.getElementById('foodPrice').value = food.price;
+        document.getElementById('foodImage').value = food.image;
+        document.getElementById('foodDescription').value = food.description;
+        document.getElementById('foodIngredients').value = food.ingredients.join(', ');
+        document.getElementById('foodSteps').value = food.steps.join('; ');
+        document.getElementById('isSpecial').checked = food.isSpecial;
+      } else {
+        // 添加新菜品
+        formTitle.textContent = '添加菜品';
+        foodForm.reset();
+        foodIdInput.value = '';
+      }
+      
+      document.getElementById('foodFormModal').classList.add('active');
+    }
+    
+    // 隐藏菜品表单模态框
+    function hideFoodFormModal() {
+      document.getElementById('foodFormModal').classList.remove('active');
+    }
+    
+    // 保存菜品
+    function saveFood() {
+      const foodIdInput = document.getElementById('foodId');
+      const foodId = foodIdInput.value ? parseInt(foodIdInput.value) : null;
+      
+      const foodData = {
+        name: document.getElementById('foodName').value,
+        category: document.getElementById('foodCategory').value,
+        price: parseFloat(document.getElementById('foodPrice').value),
+        image: document.getElementById('foodImage').value,
+        description: document.getElementById('foodDescription').value,
+        ingredients: document.getElementById('foodIngredients').value.split(',').map(i => i.trim()),
+        steps: document.getElementById('foodSteps').value.split(';').map(s => s.trim()),
+        isSpecial: document.getElementById('isSpecial').checked
+      };
+      
+      if (foodId) {
+        // 更新现有菜品
+        const foodIndex = foods.findIndex(f => f.id === foodId);
+        
+        // 如果设置为今日推荐，取消其他菜品的今日推荐状态
+        if (foodData.isSpecial) {
+          foods.forEach(f => f.isSpecial = false);
+        }
+        
+        foods[foodIndex] = { ...foods[foodIndex], ...foodData };
+      } else {
+        // 添加新菜品
+        const newId = Math.max(...foods.map(f => f.id), 0) + 1;
+        
+        // 如果设置为今日推荐，取消其他菜品的今日推荐状态
+        if (foodData.isSpecial) {
+          foods.forEach(f => f.isSpecial = false);
+        }
+        
+        foods.push({
+          id: newId,
+          ...foodData
+        });
+      }
+      
+      // 更新页面
+      renderFoodGrid();
+      renderTodaySpecial();
+      hideFoodFormModal();
+      hideEditModal();
+    }
+    
+    // 编辑菜品
+    function editFood(foodId) {
+      hideEditModal();
+      showFoodFormModal(foodId);
+    }
+    
+    // 删除菜品
+    function deleteFood(foodId) {
+      if (confirm('确定要删除这道菜品吗？')) {
+        foods = foods.filter(f => f.id !== foodId);
+        renderFoodGrid();
+        renderTodaySpecial();
+        showEditModal();
+      }
+    }
+    
+    // 获取标签样式类
+    function getBadgeClass(category) {
+      switch (category) {
+        case '红烧': return 'badge-red';
+        case '凉拌': return 'badge-green';
+        case '炒菜': return 'badge-yellow';
+        case '卤菜': return 'badge-purple';
+        case '炖菜': return 'badge-blue';
+        case '蒸菜': return 'badge-cyan';
+        case '主食': return 'badge-orange';
+        default: return 'badge-pink';
+      }
+    }
+    
+    // 初始化页面
+    initPage();
+  </script>
+</body>
+</html>
