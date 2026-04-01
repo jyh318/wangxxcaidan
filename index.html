@@ -690,6 +690,7 @@
     </div>
     
     <div class="cart-float" id="cartFloat">
+      <!--==购物车图片==-->
       <i data-lucide="shopping-cart" class="w-5 h-5"></i>
       <span class="cart-count" id="cartCount">0</span>
     </div>
@@ -852,6 +853,10 @@
         <span class="text-lg font-semibold">总计</span>
         <span class="text-2xl font-bold text-secondary-600" id="cartTotal">¥0.00</span>
       </div>
+    <!-- 支付按钮 -->
+      <button id="payBtn" class="w-full mt-6 py-3 rounded-[5px] font-semibold text-white transition-all hover:opacity-90" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+        支付
+      </button>
     </div>
   </div>
   
@@ -1025,7 +1030,7 @@
     name: "宫保鸡丁",
     category: ["炒菜"],
     price: 36.00,
-    image: "",
+    image: "https://cdn.jsdelivr.net/gh/jyh318/image-jyh/img/%E5%AE%AB%E4%BF%9D%E9%B8%A1%E4%B8%81.png",
     description: "经典川菜宫保鸡丁，鸡肉滑嫩，花生米酥脆，搭配干辣椒和花椒，麻辣鲜香，酸甜适口，下饭神器。",
     ingredients: ["鸡胸肉", "花生米", "干辣椒", "花椒", "姜", "蒜", "葱", "生抽", "醋", "白糖", "料酒", "淀粉", "盐"],
     steps: [
@@ -1046,7 +1051,7 @@
     name: "麻婆豆腐",
     category: ["炒菜"],
     price: 24.00,
-    image: "",
+    image: "https://cdn.jsdelivr.net/gh/jyh318/image-jyh/img/%E9%BA%BB%E5%A9%86%E8%B1%86%E8%85%90.png",
     description: "正宗川味麻婆豆腐，豆腐嫩滑入味，麻辣鲜香，麻、辣、烫、嫩、酥、香、鲜俱全，是经典的下饭川菜。",
     ingredients: ["嫩豆腐", "牛肉末", "豆瓣酱", "干辣椒面", "花椒粉", "姜", "蒜", "葱", "生抽", "淀粉", "盐"],
     steps: [
@@ -1066,7 +1071,7 @@
     name: "糖醋排骨",
     category: ["红烧"],
     price: 48.00,
-    image: "",
+    image: "https://cdn.jsdelivr.net/gh/jyh318/image-jyh/img/%E7%B3%96%E9%86%8B%E6%8E%92%E9%AA%A8.png",
     description: "酸甜可口的糖醋排骨，排骨外焦里嫩，裹满浓郁的糖醋酱汁，色泽红亮，口感丰富，老少皆宜。",
     ingredients: ["排骨", "姜片", "葱段", "料酒", "生抽", "老抽", "香醋", "白糖", "盐", "淀粉"],
     steps: [
@@ -1613,6 +1618,11 @@
           hideCartModal();
         }
       });
+      
+      // 支付按钮点击事件
+      document.getElementById('payBtn').addEventListener('click', () => {
+        handlePayment();
+      });
     }
     
     // ==================== 购物车管理 ====================
@@ -1665,6 +1675,8 @@
       // 根据购物车是否为空控制显示/隐藏
       if (totalItems > 0) {
         cartFloat.classList.add('show');
+        // 重新创建图标以确保显示
+        lucide.createIcons();
       } else {
         cartFloat.classList.remove('show');
       }
@@ -1731,6 +1743,69 @@
       updateCartFloat();
       // 刷新购物车模态框
       showCartModal();
+    }
+    
+    // ==================== 订单数据接口 ====================
+    let orderData = null;
+    
+    // 获取订单数据的接口
+    function getOrderData() {
+      return orderData;
+    }
+    
+    // ==================== 支付处理 ====================
+    function handlePayment() {
+      if (Object.keys(cart).length === 0) {
+        alert('购物车为空，请先添加菜品');
+        return;
+      }
+      
+      // 构建订单数据
+      const items = [];
+      let totalPrice = 0;
+      
+      Object.entries(cart).forEach(([foodId, quantity]) => {
+        const food = foods.find(f => f.id === parseInt(foodId));
+        if (food) {
+          const itemTotal = food.price * quantity;
+          totalPrice += itemTotal;
+          
+          items.push({
+            id: food.id,
+            name: food.name,
+            price: food.price,
+            image: food.image,
+            quantity: quantity,
+            itemTotal: itemTotal
+          });
+        }
+      });
+      
+      // 创建订单JSON对象
+      orderData = {
+        orderId: Date.now(),
+        items: items,
+        totalPrice: totalPrice,
+        orderTime: new Date().toISOString()
+      };
+      
+      console.log('订单数据已生成，可通过 getOrderData() 获取:', orderData);
+      
+      // 显示订单信息
+      alert(`订单创建成功！\n订单号：${orderData.orderId}\n总金额：¥${totalPrice.toFixed(2)}\n\n订单数据已准备就绪，可通过 getOrderData() 获取`);
+      
+      // 清空购物车
+      cart = {};
+      updateCartFloat();
+      hideCartModal();
+      
+      // 更新所有卡片数量显示
+      document.querySelectorAll('.food-card').forEach(card => {
+        const quantitySpan = card.querySelector('.order-btn .quantity');
+        if (quantitySpan) {
+          quantitySpan.textContent = '0';
+        }
+      });
     }
     
     // ==================== 模态框隐藏 ====================
