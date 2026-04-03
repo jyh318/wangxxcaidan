@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
+
     :root {
       --primary-color: #2563eb;
       --primary-light: #3b82f6;
@@ -27,13 +28,13 @@
       --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
       --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #f0f9ff 50%, #fef7fb 75%, #ffffff 100%);
@@ -46,7 +47,7 @@
       margin: 0;
       position: relative;
     }
-    
+
     body::before {
       content: '';
       position: fixed;
@@ -54,42 +55,50 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: 
+      background:
         radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.05) 0%, transparent 40%);
       pointer-events: none;
       z-index: 0;
     }
-    
+
     @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
     }
-    
+
     .glass {
       background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.6);
       border-radius: 20px;
-      box-shadow: 
+      box-shadow:
         0 4px 6px -1px rgba(0, 0, 0, 0.02),
         0 2px 4px -1px rgba(0, 0, 0, 0.02),
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
       transition: var(--transition-base);
     }
-    
+
     .glass:hover {
-      box-shadow: 
+      box-shadow:
         0 10px 15px -3px rgba(0, 0, 0, 0.05),
         0 4px 6px -2px rgba(0, 0, 0, 0.03),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
       border-color: rgba(255, 255, 255, 0.8);
       transform: translateY(-2px);
     }
-    
+
     @media (max-width: 640px) {
       .glass {
         background: rgba(255, 255, 255, 0.9);
@@ -97,7 +106,7 @@
         border-width: 0.5px;
       }
     }
-    
+
     .category-btn {
       padding: 10px 24px;
       border-radius: 50px;
@@ -112,7 +121,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .category-btn::before {
       content: '';
       position: absolute;
@@ -123,11 +132,11 @@
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
       transition: left 0.6s;
     }
-    
+
     .category-btn:hover::before {
       left: 100%;
     }
-    
+
     .category-btn:hover {
       background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
       color: white;
@@ -135,7 +144,7 @@
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3), 0 0 20px rgba(37, 99, 235, 0.1);
       border-color: transparent;
     }
-    
+
     .category-btn.active {
       background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
       color: white;
@@ -143,7 +152,7 @@
       border-color: transparent;
       position: relative;
     }
-    
+
     .category-btn.active::after {
       content: '';
       position: absolute;
@@ -155,7 +164,7 @@
       background: rgba(255, 255, 255, 0.5);
       border-radius: 2px;
     }
-    
+
     .food-card {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(16px);
@@ -163,7 +172,7 @@
       border: 1px solid rgba(255, 255, 255, 0.6);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 
+      box-shadow:
         0 4px 6px -1px rgba(0, 0, 0, 0.02),
         0 2px 4px -1px rgba(0, 0, 0, 0.02),
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
@@ -172,30 +181,53 @@
       opacity: 0;
       animation: fadeIn 0.5s forwards;
     }
-    
+
     .food-card:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 
+      box-shadow:
         0 20px 25px -5px rgba(0, 0, 0, 0.05),
         0 8px 10px -6px rgba(0, 0, 0, 0.03),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
       border-color: rgba(255, 255, 255, 0.9);
     }
-    
-    .food-card:nth-child(1) { animation-delay: 0.1s; }
-    .food-card:nth-child(2) { animation-delay: 0.2s; }
-    .food-card:nth-child(3) { animation-delay: 0.3s; }
-    .food-card:nth-child(4) { animation-delay: 0.4s; }
-    .food-card:nth-child(5) { animation-delay: 0.5s; }
-    .food-card:nth-child(6) { animation-delay: 0.6s; }
-    .food-card:nth-child(7) { animation-delay: 0.7s; }
-    .food-card:nth-child(8) { animation-delay: 0.8s; }
-    
+
+    .food-card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .food-card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .food-card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .food-card:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .food-card:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    .food-card:nth-child(6) {
+      animation-delay: 0.6s;
+    }
+
+    .food-card:nth-child(7) {
+      animation-delay: 0.7s;
+    }
+
+    .food-card:nth-child(8) {
+      animation-delay: 0.8s;
+    }
+
     .today-special {
       position: relative;
       overflow: hidden;
     }
-    
+
     .today-special::before {
       content: '今日推荐';
       position: absolute;
@@ -210,8 +242,9 @@
       box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
       z-index: 10;
     }
-    
-    .modal, .edit-modal {
+
+    .modal,
+    .edit-modal {
       display: none;
       position: fixed;
       top: 0;
@@ -228,12 +261,13 @@
       align-items: center;
       padding: 20px;
     }
-    
-    .modal.active, .edit-modal.active {
+
+    .modal.active,
+    .edit-modal.active {
       display: flex;
       opacity: 1;
     }
-    
+
     .modal-content {
       max-width: 90%;
       max-height: 90vh;
@@ -246,17 +280,17 @@
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 24px;
-      box-shadow: 
+      box-shadow:
         0 25px 50px -12px rgba(0, 0, 0, 0.08),
         0 12px 24px -8px rgba(0, 0, 0, 0.05),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
       padding: 40px;
     }
-    
+
     .modal.active .modal-content {
       transform: translateY(0) scale(1);
     }
-    
+
     .btn {
       padding: 14px 28px;
       border-radius: 14px;
@@ -273,7 +307,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .btn::before {
       content: '';
       position: absolute;
@@ -284,44 +318,44 @@
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
       transition: left 0.5s;
     }
-    
+
     .btn:hover::before {
       left: 100%;
     }
-    
+
     .btn-primary {
       background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
       color: white;
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
     }
-    
+
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
     }
-    
+
     .btn-secondary {
       background: linear-gradient(135deg, var(--secondary-color), var(--secondary-hover));
       color: white;
       box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
     }
-    
+
     .btn-secondary:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(249, 115, 22, 0.35);
     }
-    
+
     .btn-danger {
       background: linear-gradient(135deg, #ef4444, #dc2626);
       color: white;
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
     }
-    
+
     .btn-danger:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
     }
-    
+
     .btn-outline {
       background: rgba(255, 255, 255, 0.7);
       border: 1.5px solid var(--primary-color);
@@ -329,7 +363,7 @@
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
     }
-    
+
     .btn-outline:hover {
       background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
       color: white;
@@ -337,8 +371,10 @@
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
       border-color: transparent;
     }
-    
-    input, textarea, select {
+
+    input,
+    textarea,
+    select {
       background: rgba(255, 255, 255, 0.85);
       border: 1.5px solid var(--neutral-200);
       border-radius: 14px;
@@ -348,14 +384,16 @@
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
     }
-    
-    input:focus, textarea:focus, select:focus {
+
+    input:focus,
+    textarea:focus,
+    select:focus {
       outline: none;
       border-color: var(--primary-color);
       box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08), 0 0 0 1px rgba(37, 99, 235, 0.1);
       background: rgba(255, 255, 255, 0.95);
     }
-    
+
     .badge {
       display: inline-block;
       padding: 6px 14px;
@@ -368,60 +406,67 @@
       -webkit-backdrop-filter: blur(8px);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
-    
-    .badge-red { 
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(220, 38, 38, 0.08)); 
-      color: #b91c1c; 
+
+    .badge-red {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(220, 38, 38, 0.08));
+      color: #b91c1c;
       border-color: rgba(239, 68, 68, 0.25);
       box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
     }
-    .badge-green { 
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(22, 163, 74, 0.08)); 
-      color: #166534; 
+
+    .badge-green {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(22, 163, 74, 0.08));
+      color: #166534;
       border-color: rgba(34, 197, 94, 0.25);
       box-shadow: 0 2px 8px rgba(34, 197, 94, 0.15);
     }
-    .badge-yellow { 
-      background: linear-gradient(135deg, rgba(234, 179, 8, 0.12), rgba(202, 138, 4, 0.08)); 
-      color: #854d0e; 
+
+    .badge-yellow {
+      background: linear-gradient(135deg, rgba(234, 179, 8, 0.12), rgba(202, 138, 4, 0.08));
+      color: #854d0e;
       border-color: rgba(234, 179, 8, 0.25);
       box-shadow: 0 2px 8px rgba(234, 179, 8, 0.15);
     }
-    .badge-purple { 
-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(147, 51, 234, 0.08)); 
-      color: #7e22ce; 
+
+    .badge-purple {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(147, 51, 234, 0.08));
+      color: #7e22ce;
       border-color: rgba(168, 85, 247, 0.25);
       box-shadow: 0 2px 8px rgba(168, 85, 247, 0.15);
     }
-    .badge-blue { 
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(37, 99, 235, 0.08)); 
-      color: #1d4ed8; 
+
+    .badge-blue {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(37, 99, 235, 0.08));
+      color: #1d4ed8;
       border-color: rgba(59, 130, 246, 0.25);
       box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
     }
-    .badge-cyan { 
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(8, 145, 178, 0.08)); 
-      color: #0e7490; 
+
+    .badge-cyan {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(8, 145, 178, 0.08));
+      color: #0e7490;
       border-color: rgba(6, 182, 212, 0.25);
       box-shadow: 0 2px 8px rgba(6, 182, 212, 0.15);
     }
-    .badge-orange { 
-      background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(234, 88, 12, 0.08)); 
-      color: #c2410c; 
+
+    .badge-orange {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(234, 88, 12, 0.08));
+      color: #c2410c;
       border-color: rgba(249, 115, 22, 0.25);
       box-shadow: 0 2px 8px rgba(249, 115, 22, 0.15);
     }
-    .badge-pink { 
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(219, 39, 119, 0.08)); 
-      color: #be185d; 
+
+    .badge-pink {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(219, 39, 119, 0.08));
+      color: #be185d;
       border-color: rgba(236, 72, 153, 0.25);
       box-shadow: 0 2px 8px rgba(236, 72, 153, 0.15);
     }
-    
+
     .search-container {
       position: relative;
     }
-    
+
     .search-container input {
       width: 100%;
       padding: 12px 18px 12px 44px;
@@ -432,7 +477,7 @@
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
     }
-    
+
     .search-container i {
       position: absolute;
       left: 16px;
@@ -440,7 +485,7 @@
       transform: translateY(-50%);
       color: var(--neutral-700);
     }
-    
+
     .order-btn {
       display: flex;
       align-items: center;
@@ -458,13 +503,14 @@
       width: auto;
       min-width: 80px;
     }
-    
+
     .order-btn:hover {
       transform: translateY(-1px);
       box-shadow: 0 4px 8px rgba(249, 115, 22, 0.25);
     }
-    
-    .order-btn .minus, .order-btn .plus {
+
+    .order-btn .minus,
+    .order-btn .plus {
       width: 20px;
       height: 20px;
       display: flex;
@@ -476,18 +522,19 @@
       font-weight: bold;
       transition: var(--transition-base);
     }
-    
-    .order-btn .minus:hover, .order-btn .plus:hover {
+
+    .order-btn .minus:hover,
+    .order-btn .plus:hover {
       background: rgba(255, 255, 255, 0.4);
     }
-    
+
     .order-btn .quantity {
       font-size: 13px;
       font-weight: 600;
       min-width: 20px;
       text-align: center;
     }
-    
+
     .cart-float {
       position: fixed;
       bottom: 20px;
@@ -504,16 +551,16 @@
       align-items: center;
       gap: 8px;
     }
-    
+
     .cart-float:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
     }
-    
+
     .cart-float.show {
       display: flex;
     }
-    
+
     .cart-float .cart-count {
       background: white;
       color: var(--secondary-color);
@@ -526,102 +573,106 @@
       font-size: 12px;
       font-weight: bold;
     }
-    
+
     @keyframes fadeIn {
       from {
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
-    
+
     @media (max-width: 640px) {
       .food-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 4px;
       }
-      
+
       .food-card {
         border-radius: 12px;
       }
-      
+
       .food-card img {
         height: 120px;
       }
-      
+
       .food-card .p-5 {
         padding: 8px;
       }
-      
+
       .food-card h3 {
         font-size: 14px;
       }
-      
+
       .food-card p {
         font-size: 11px;
         line-height: 1.3;
       }
-      
+
       .food-card .order-btn {
         padding: 5px 8px;
         font-size: 11px;
         min-width: 70px;
       }
-      
-      .food-card .order-btn .minus, .food-card .order-btn .plus {
+
+      .food-card .order-btn .minus,
+      .food-card .order-btn .plus {
         width: 18px;
         height: 18px;
         font-size: 12px;
       }
-      
+
       .food-card .order-btn .quantity {
         font-size: 12px;
         min-width: 18px;
       }
-      
+
       .category-scroll {
         overflow-x: auto;
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
         padding-bottom: 8px;
       }
-      
+
       .category-scroll::-webkit-scrollbar {
         display: none;
       }
-      
+
       .category-btn {
         display: inline-block;
         margin-right: 8px;
         padding: 8px 16px;
         font-size: 13px;
       }
-      
+
       .modal-content {
         padding: 24px;
         border-radius: 20px;
       }
-      
+
       .btn {
         padding: 12px 24px;
         width: 100%;
       }
-      
-      .food-card img, #todaySpecial img, .modal-content img {
+
+      .food-card img,
+      #todaySpecial img,
+      .modal-content img {
         height: 200px;
         object-fit: cover;
       }
     }
-    
+
     @media (min-width: 641px) and (max-width: 1024px) {
       .food-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    
+
     @media (min-width: 1025px) {
       .food-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -629,24 +680,26 @@
     }
   </style>
 </head>
+
 <body class="p-4 md:p-6 lg:p-8">
   <div class="container mx-auto max-w-7xl relative z-10">
     <header class="glass rounded-2xl p-6 mb-8">
       <div class="flex items-center gap-4 flex-wrap">
         <h1 class="text-2xl font-bold text-primary-700 whitespace-nowrap">小贾私房菜</h1>
-        
+
         <div class="flex-1 relative min-w-[200px]">
-          <input type="text" id="searchInput" placeholder="搜索菜品..." class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
+          <input type="text" id="searchInput" placeholder="搜索菜品..."
+            class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
           <i data-lucide="search" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"></i>
         </div>
-        
+
         <button id="editBtn" class="btn btn-outline flex items-center whitespace-nowrap">
           <i data-lucide="edit-2" class="mr-2 w-4 h-4"></i>
           编辑
         </button>
       </div>
     </header>
-    
+
     <div class="glass rounded-2xl p-6 mb-8">
       <h2 class="text-xl font-semibold mb-5">菜品分类</h2>
       <div class="category-scroll flex flex-wrap gap-3">
@@ -665,11 +718,13 @@
         <button class="category-btn" data-category="传统">传统</button>
       </div>
     </div>
-    
+
     <div id="todaySpecial" class="glass rounded-2xl p-8 mb-8 today-special">
       <div class="flex flex-col md:flex-row items-center gap-6">
         <div class="w-full md:w-1/3">
-          <img id="specialImage" src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bf5208e501584d5c9e955237c14d94ac~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963135&x-signature=VvRFcfYNN9ePKTBXiI24eyHYh2E%3D" alt="今日推荐" class="w-full h-56 object-cover rounded-2xl shadow-lg">
+          <img id="specialImage"
+            src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bf5208e501584d5c9e955237c14d94ac~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963135&x-signature=VvRFcfYNN9ePKTBXiI24eyHYh2E%3D"
+            alt="今日推荐" class="w-full h-56 object-cover rounded-2xl shadow-lg">
         </div>
         <div class="w-full md:w-2/3">
           <h2 class="text-2xl font-bold mb-3" id="specialName">香煎五花肉</h2>
@@ -677,7 +732,8 @@
             <span class="badge badge-orange mr-3" id="specialCategory">红烧</span>
             <span class="text-xl font-bold text-secondary-600" id="specialPrice">¥38.00</span>
           </div>
-          <p class="text-gray-700 mb-5 leading-relaxed" id="specialDescription">精选上等五花肉，经过慢火煎制，外焦里嫩，肥而不腻，香气四溢。搭配特制蘸料，口感丰富，是本店的招牌菜品之一。</p>
+          <p class="text-gray-700 mb-5 leading-relaxed" id="specialDescription">
+            精选上等五花肉，经过慢火煎制，外焦里嫩，肥而不腻，香气四溢。搭配特制蘸料，口感丰富，是本店的招牌菜品之一。</p>
           <button id="viewSpecialBtn" class="btn btn-primary">
             <i data-lucide="eye" class="w-4 h-4"></i>
             查看详情
@@ -685,17 +741,17 @@
         </div>
       </div>
     </div>
-    
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 food-grid" id="foodGrid">
     </div>
-    
+
     <div class="cart-float" id="cartFloat">
       <!--==购物车图片==-->
       <i data-lucide="shopping-cart" class="w-5 h-5"></i>
       <span class="cart-count" id="cartCount">0</span>
     </div>
   </div>
-  
+
   <div id="foodModal" class="modal">
     <div class="modal-content max-w-2xl">
       <div class="flex justify-between items-start mb-6">
@@ -704,27 +760,27 @@
           <i data-lucide="x" class="w-6 h-6"></i>
         </button>
       </div>
-      
+
       <div class="mb-6">
         <img id="modalImage" src="" alt="菜品图片" class="w-full h-72 object-cover rounded-2xl shadow-lg">
       </div>
-      
+
       <div class="flex items-center mb-5">
         <span class="badge mr-3" id="modalCategory">分类</span>
         <span class="text-xl font-bold text-secondary-600" id="modalPrice">¥0.00</span>
       </div>
-      
+
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3 text-neutral-800">菜品描述</h3>
         <p class="text-gray-700 leading-relaxed" id="modalDescription">菜品描述将显示在这里...</p>
       </div>
-      
+
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3 text-neutral-800">主要用料</h3>
         <ul class="list-disc pl-6 text-gray-700 space-y-1" id="modalIngredients">
         </ul>
       </div>
-      
+
       <div>
         <h3 class="text-lg font-semibold mb-3 text-neutral-800">制作过程</h3>
         <ol class="list-decimal pl-6 text-gray-700 space-y-2" id="modalSteps">
@@ -732,7 +788,7 @@
       </div>
     </div>
   </div>
-  
+
   <div id="editModal" class="edit-modal">
     <div class="modal-content max-w-2xl">
       <div class="flex justify-between items-start mb-6">
@@ -741,19 +797,19 @@
           <i data-lucide="x" class="w-6 h-6"></i>
         </button>
       </div>
-      
+
       <div class="mb-6">
         <button id="addFoodBtn" class="btn btn-primary mb-5">
           <i data-lucide="plus" class="w-4 h-4"></i>
           添加菜品
         </button>
-        
+
         <div id="foodList" class="space-y-3">
         </div>
       </div>
     </div>
   </div>
-  
+
   <div id="foodFormModal" class="modal">
     <div class="modal-content max-w-lg">
       <div class="flex justify-between items-start mb-6">
@@ -762,17 +818,19 @@
           <i data-lucide="x" class="w-6 h-6"></i>
         </button>
       </div>
-      
+
       <form id="foodForm">
         <input type="hidden" id="foodId">
-        
+
         <div class="form-group mb-4">
-          <label for="foodName" class="block mb-2 font-medium text-neutral-800">菜品名称 <span class="text-red-500">*</span></label>
+          <label for="foodName" class="block mb-2 font-medium text-neutral-800">菜品名称 <span
+              class="text-red-500">*</span></label>
           <input type="text" id="foodName" required class="w-full">
         </div>
-        
+
         <div class="form-group mb-4">
-          <label for="foodCategory" class="block mb-2 font-medium text-neutral-800">菜品分类 <span class="text-red-500">*</span></label>
+          <label for="foodCategory" class="block mb-2 font-medium text-neutral-800">菜品分类 <span
+              class="text-red-500">*</span></label>
           <select id="foodCategory" required class="w-full mb-2">
             <option value="">请选择分类</option>
             <option value="红烧">红烧</option>
@@ -790,39 +848,44 @@
           </select>
           <p class="text-xs text-gray-500">提示：可添加多个分类标签，如"营养,清淡"</p>
         </div>
-        
+
         <div class="form-group mb-4">
-          <label for="foodPrice" class="block mb-2 font-medium text-neutral-800">菜品价格 <span class="text-red-500">*</span></label>
+          <label for="foodPrice" class="block mb-2 font-medium text-neutral-800">菜品价格 <span
+              class="text-red-500">*</span></label>
           <input type="number" id="foodPrice" step="0.01" min="0" required class="w-full">
         </div>
-        
+
         <div class="form-group mb-4">
-          <label for="foodImage" class="block mb-2 font-medium text-neutral-800">菜品图片URL <span class="text-red-500">*</span></label>
+          <label for="foodImage" class="block mb-2 font-medium text-neutral-800">菜品图片URL <span
+              class="text-red-500">*</span></label>
           <input type="url" id="foodImage" required class="w-full">
         </div>
-        
+
         <div class="form-group mb-4">
-          <label for="foodDescription" class="block mb-2 font-medium text-neutral-800">菜品描述 <span class="text-red-500">*</span></label>
+          <label for="foodDescription" class="block mb-2 font-medium text-neutral-800">菜品描述 <span
+              class="text-red-500">*</span></label>
           <textarea id="foodDescription" rows="3" required class="w-full"></textarea>
         </div>
-        
+
         <div class="form-group mb-4">
-          <label for="foodIngredients" class="block mb-2 font-medium text-neutral-800">主要用料 (用逗号分隔) <span class="text-red-500">*</span></label>
+          <label for="foodIngredients" class="block mb-2 font-medium text-neutral-800">主要用料 (用逗号分隔) <span
+              class="text-red-500">*</span></label>
           <input type="text" id="foodIngredients" required class="w-full">
         </div>
-        
+
         <div class="form-group mb-5">
-          <label for="foodSteps" class="block mb-2 font-medium text-neutral-800">制作过程 (用分号分隔) <span class="text-red-500">*</span></label>
+          <label for="foodSteps" class="block mb-2 font-medium text-neutral-800">制作过程 (用分号分隔) <span
+              class="text-red-500">*</span></label>
           <textarea id="foodSteps" rows="4" required class="w-full"></textarea>
         </div>
-        
+
         <div class="form-group mb-6">
           <label class="flex items-center cursor-pointer">
             <input type="checkbox" id="isSpecial" class="mr-2 w-5 h-5 accent-primary-600">
             <span class="font-medium text-neutral-800">设为今日推荐</span>
           </label>
         </div>
-        
+
         <div class="flex justify-end space-x-4 mt-6">
           <button type="button" id="cancelFoodForm" class="btn btn-outline">
             <i data-lucide="x" class="w-4 h-4"></i>
@@ -836,7 +899,7 @@
       </form>
     </div>
   </div>
-  
+
   <div id="cartModal" class="modal">
     <div class="modal-content max-w-lg">
       <div class="flex justify-between items-start mb-6">
@@ -845,561 +908,45 @@
           <i data-lucide="x" class="w-6 h-6"></i>
         </button>
       </div>
-      
+
       <div id="cartItems" class="space-y-4 mb-6 max-h-96 overflow-y-auto">
       </div>
-      
+
       <div class="flex justify-between items-center pt-4 border-t border-gray-200">
         <span class="text-lg font-semibold">总计</span>
         <span class="text-2xl font-bold text-secondary-600" id="cartTotal">¥0.00</span>
       </div>
-    <!-- 支付按钮 -->
-      <button id="payBtn" class="w-full mt-6 py-3 rounded-[5px] font-semibold text-white transition-all hover:opacity-90" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+      <!-- 支付按钮 -->
+      <button id="payBtn"
+        class="w-full mt-6 py-3 rounded-[5px] font-semibold text-white transition-all hover:opacity-90"
+        style="background: linear-gradient(135deg, #f97316, #ea580c);">
         支付
       </button>
     </div>
   </div>
-  
+
   <script>
     // ==================== 全局变量定义 ====================
     // 菜品数据数组，包含所有菜品信息
-    let foods = [
-      {
-        id: 1,
-        name: "香煎五花肉",
-        category: ["红烧"],
-        price: 38.00,
-        image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bf5208e501584d5c9e955237c14d94ac~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963135&x-signature=VvRFcfYNN9ePKTBXiI24eyHYh2E%3D",
-        description: "精选上等五花肉，经过慢火煎制，外焦里嫩，肥而不腻，香气四溢。搭配特制蘸料，口感丰富，是本店的招牌菜品之一。",
-        ingredients: ["五花肉", "姜", "蒜", "酱油", "料酒", "白糖", "盐", "胡椒粉"],
-        steps: [
-          "五花肉洗净，切成厚片",
-          "锅中放入少量油，放入五花肉片",
-          "小火煎至两面金黄",
-          "加入姜蒜爆香",
-          "加入酱油、料酒、白糖、盐、胡椒粉调味",
-          "翻炒均匀，收汁即可"
-        ],
-        isSpecial: true
-      },
-      {
-        id: 2,
-        name: "彩椒炒鸡丁",
-        category: ["炒菜", "营养"],
-        price: 32.00,
-        image: "https://p6-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/64168cce40f545d78f582c3243235fa6~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963135&x-signature=sp%2Fc83C8IdFRC9mZkSQIFE60Vss%3D",
-        description: "嫩滑的鸡肉搭配新鲜彩椒，色彩鲜艳，营养丰富。鸡肉嫩滑多汁，彩椒爽脆可口，是一道色香味俱全的家常炒菜。",
-        ingredients: ["鸡胸肉", "红彩椒", "黄彩椒", "绿彩椒", "姜", "蒜", "酱油", "料酒", "淀粉", "盐", "糖"],
-        steps: [
-          "鸡胸肉切成丁，用盐、料酒、淀粉腌制15分钟",
-          "彩椒洗净，切成小块",
-          "锅中放油，爆香姜蒜",
-          "放入鸡丁炒至变色",
-          "加入彩椒翻炒均匀",
-          "加入酱油、糖调味",
-          "炒至彩椒断生即可"
-        ],
-        isSpecial: false
-      },
-      {
-        id: 3,
-        name: "清蒸豆腐",
-        category: ["蒸菜", "清淡"],
-        price: 22.00,
-        image: "https://p6-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/0c64b1edbca9493abc959a9002ea2063~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963138&x-signature=ij04WDdCNFfb7Mpdrkd8Z%2FYjDi8%3D",
-        description: "选用优质嫩豆腐，清蒸后淋上特制的酱汁，口感滑嫩，味道鲜美。豆腐富含蛋白质，营养健康，适合各类人群食用。",
-        ingredients: ["嫩豆腐", "葱", "姜", "蒜", "酱油", "生抽", "香油", "盐"],
-        steps: [
-          "豆腐切成大块，放入盘中",
-          "锅中水烧开，放入豆腐蒸5分钟",
-          "取出，倒掉盘中的水",
-          "葱切丝，姜蒜切末",
-          "将酱油、生抽、盐混合成酱汁",
-          "将酱汁淋在豆腐上",
-          "撒上葱姜蒜，淋上香油即可"
-        ],
-        isSpecial: false
-      },
-      {
-        id: 4,
-        name: "蔬菜沙拉",
-        category: ["凉拌", "健康", "低脂"],
-        price: 26.00,
-        image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/b9a4e77cefec41e69cd0b244d7ddca37~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963135&x-signature=JTEK76E1FYdwdTx6D6OOpUCCagQ%3D",
-        description: "新鲜的混合蔬菜，搭配特制沙拉酱，清爽可口，营养丰富。适合减肥人士和健康饮食爱好者。",
-        ingredients: ["生菜", "黄瓜", "胡萝卜", "小番茄", "橄榄油", "柠檬汁", "蜂蜜", "盐", "黑胡椒"],
-        steps: [
-          "生菜洗净撕成小块",
-          "黄瓜、胡萝卜切成条",
-          "小番茄对半切",
-          "将所有蔬菜放入大碗中",
-          "橄榄油、柠檬汁、蜂蜜、盐、黑胡椒混合成沙拉酱",
-          "将沙拉酱淋在蔬菜上",
-          "轻轻拌匀即可"
-        ],
-        isSpecial: false
-      },
-      {
-        id: 5,
-        name: "蔬菜肉汤",
-        category: ["炖菜", "营养"],
-        price: 30.00,
-        image: "https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/5cd624d7b11f4592b801a58744fb2733~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963150&x-signature=Ny6GIotn55BKrd5Zk6T04GCUPmw%3D",
-        description: "营养丰富的蔬菜肉汤，选用多种新鲜蔬菜和优质瘦肉，慢炖而成。汤清味鲜，富含维生素和蛋白质，是一道健康美味的汤品。",
-        ingredients: ["猪瘦肉", "胡萝卜", "土豆", "西兰花", "洋葱", "姜", "蒜", "料酒", "盐", "鸡精"],
-        steps: [
-          "瘦肉切成小块，焯水去血水",
-          "胡萝卜、土豆切成块",
-          "西兰花切成小朵",
-          "洋葱切丝",
-          "锅中放油，爆香姜蒜",
-          "放入瘦肉煸炒",
-          "加入料酒",
-          "加入清水，大火烧开",
-          "转小火炖30分钟",
-          "加入胡萝卜、土豆继续炖20分钟",
-          "加入西兰花、洋葱炖5分钟",
-          "加盐、鸡精调味即可"
-        ],
-        isSpecial: false
-      },
-      {
-        id: 6,
-        name: "彩椒炒饭",
-        category: ["主食", "炒菜"],
-        price: 28.00,
-        image: "https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/1d10cddd4a754da0918a8ccf2ae73e64~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963150&x-signature=gR6nurIIrCCpmaC090q695SX%2FqY%3D",
-        description: "香喷喷的彩椒炒饭，米饭粒粒分明，搭配鲜艳的彩椒和其他配料，色彩诱人，味道丰富。是一道简单又美味的主食。",
-        ingredients: ["米饭", "红彩椒", "黄彩椒", "青豆", "玉米粒", "鸡蛋", "葱", "蒜", "盐", "生抽"],
-        steps: [
-          "彩椒切成小丁",
-          "鸡蛋打散炒熟盛出",
-          "锅中放油，爆香蒜末",
-          "放入彩椒、青豆、玉米粒翻炒",
-          "加入米饭翻炒均匀",
-          "加入炒好的鸡蛋",
-          "加入盐、生抽调味",
-          "翻炒均匀，撒上葱花即可"
-        ],
-        isSpecial: false
-      },
-      {
-        id: 7,
-        name: "清蒸鱼",
-        category: ["蒸菜", "清淡"],
-        price: 48.00,
-        image: "https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/ebe94b4496c647a7a00ba1e09a7a5261~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963150&x-signature=DgMshkPWbu0WLvzU7ruGzVvxjp4%3D",
-        description: "选用新鲜活鱼，清蒸后保持了鱼肉的鲜嫩口感，搭配葱姜和特制酱汁，味道鲜美。鱼肉富含优质蛋白质，营养丰富。",
-        ingredients: ["鱼", "葱", "姜", "蒜", "酱油", "生抽", "料酒", "盐", "食用油"],
-        steps: [
-          "鱼洗净，在两面划几刀",
-          "用盐、料酒腌制10分钟",
-          "葱切丝，姜切丝",
-          "将鱼放在盘中，撒上一半的葱姜丝",
-          "锅中水烧开，放入鱼蒸8-10分钟",
-          "取出，倒掉盘中的水",
-          "撒上剩余的葱姜丝",
-          "锅中放油烧热，浇在鱼上",
-          "淋上酱油、生抽即可"
-        ],
-        isSpecial: false
-      },
-      {
-        id: 8,
-        name: "饺子",
-        category: ["主食", "传统"],
-        price: 36.00,
-        image: "https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/de2b60f453fb4731a423a24f0948b140~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260313110504DBCBF9612EF97960CF45&rrcfp=f06b921b&x-expires=1775963150&x-signature=dFeVVL9x29HKC%2Ba8NUmv3iOOD4U%3D",
-        description: "手工包制的饺子，皮薄馅大，口感丰富。馅料选用新鲜食材，味道鲜美。可搭配醋、辣椒油等调料食用，是传统的中式主食。",
-        ingredients: ["面粉", "猪肉", "白菜", "葱", "姜", "蒜", "酱油", "盐", "香油", "花椒粉"],
-        steps: [
-          "面粉加水和成面团，醒发30分钟",
-          "猪肉剁成肉末",
-          "白菜切碎，挤出水份",
-          "葱姜蒜切末",
-          "将肉末、白菜、葱姜蒜混合",
-          "加入酱油、盐、香油、花椒粉调味",
-          "面团分成小剂子，擀成饺子皮",
-          "包入馅料，捏成饺子",
-          "锅中水烧开，放入饺子煮熟即可"
-        ],
-        isSpecial: false
-      },
-  {
-    id: 9,
-    name: "宫保鸡丁",
-    category: ["炒菜"],
-    price: 36.00,
-    image: "https://cdn.jsdelivr.net/gh/jyh318/image-jyh/img/%E5%AE%AB%E4%BF%9D%E9%B8%A1%E4%B8%81.png",
-    description: "经典川菜宫保鸡丁，鸡肉滑嫩，花生米酥脆，搭配干辣椒和花椒，麻辣鲜香，酸甜适口，下饭神器。",
-    ingredients: ["鸡胸肉", "花生米", "干辣椒", "花椒", "姜", "蒜", "葱", "生抽", "醋", "白糖", "料酒", "淀粉", "盐"],
-    steps: [
-      "鸡胸肉切成丁，用盐、料酒、淀粉腌制15分钟",
-      "花生米炸熟备用，干辣椒切段",
-      "碗中调汁：生抽、醋、白糖、淀粉、少量水搅匀",
-      "锅中放油，爆香花椒和干辣椒",
-      "放入鸡丁炒至变色盛出",
-      "锅中留底油，爆香姜蒜",
-      "倒入鸡丁翻炒",
-      "淋入调好的酱汁翻炒均匀",
-      "加入花生米和葱段，翻炒出锅"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 10,
-    name: "麻婆豆腐",
-    category: ["炒菜"],
-    price: 24.00,
-    image: "https://cdn.jsdelivr.net/gh/jyh318/image-jyh/img/%E9%BA%BB%E5%A9%86%E8%B1%86%E8%85%90.png",
-    description: "正宗川味麻婆豆腐，豆腐嫩滑入味，麻辣鲜香，麻、辣、烫、嫩、酥、香、鲜俱全，是经典的下饭川菜。",
-    ingredients: ["嫩豆腐", "牛肉末", "豆瓣酱", "干辣椒面", "花椒粉", "姜", "蒜", "葱", "生抽", "淀粉", "盐"],
-    steps: [
-      "豆腐切成小块，焯水备用",
-      "锅中放油，炒香牛肉末至变色",
-      "加入豆瓣酱炒出红油",
-      "放入姜蒜末爆香",
-      "加入适量清水，放入豆腐块",
-      "加生抽、盐调味，小火煮3分钟",
-      "水淀粉勾芡，撒花椒粉和葱花",
-      "翻炒均匀即可出锅"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 11,
-    name: "糖醋排骨",
-    category: ["红烧"],
-    price: 48.00,
-    image: "https://cdn.jsdelivr.net/gh/jyh318/image-jyh/img/%E7%B3%96%E9%86%8B%E6%8E%92%E9%AA%A8.png",
-    description: "酸甜可口的糖醋排骨，排骨外焦里嫩，裹满浓郁的糖醋酱汁，色泽红亮，口感丰富，老少皆宜。",
-    ingredients: ["排骨", "姜片", "葱段", "料酒", "生抽", "老抽", "香醋", "白糖", "盐", "淀粉"],
-    steps: [
-      "排骨焯水，去除血沫和杂质",
-      "锅中放油，放入白糖炒出糖色",
-      "加入排骨翻炒至上色",
-      "放入姜片、葱段、料酒爆香",
-      "加入生抽、老抽调味",
-      "加清水没过排骨，大火烧开",
-      "转小火炖30分钟至排骨软烂",
-      "加入香醋，大火收汁，水淀粉勾芡"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 12,
-    name: "鱼香肉丝",
-    category: ["炒菜"],
-    price: 32.00,
-    image: "https://cdn.jsdelivr.net/gh/jyh318/image-jyh/img/%E9%B1%BC%E9%A6%99%E8%82%89%E4%B8%9D.jpg",
-    description: "经典川菜鱼香肉丝，肉丝滑嫩，配菜爽脆，鱼香味浓郁，咸甜酸辣平衡，是一道非常下饭的家常菜。",
-    ingredients: ["猪里脊肉", "木耳", "胡萝卜", "竹笋", "泡椒", "姜", "蒜", "葱", "生抽", "醋", "白糖", "料酒", "淀粉"],
-    steps: [
-      "里脊肉切丝，用料酒、淀粉腌制10分钟",
-      "木耳、胡萝卜、竹笋切丝",
-      "调鱼香汁：生抽、醋、白糖、淀粉、水搅匀",
-      "锅中放油，炒散肉丝至变色盛出",
-      "爆香泡椒、姜蒜末",
-      "放入木耳、胡萝卜、竹笋丝翻炒",
-      "倒入肉丝翻炒均匀",
-      "淋入鱼香汁，撒葱花即可"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 13,
-    name: "凉拌黄瓜",
-    category: ["凉拌"],
-    price: 16.00,
-    image: "https://raw.githubusercontent.com/jyh318/image-jyh/master/img/%E5%87%89%E6%8B%8C%E9%BB%84%E7%93%9C.jpg",
-    description: "清爽开胃的凉拌黄瓜，黄瓜脆爽，酸辣咸香，做法简单，是夏季必备的开胃小菜。",
-    ingredients: ["黄瓜", "蒜末", "小米辣", "生抽", "香醋", "香油", "白糖", "盐", "香菜"],
-    steps: [
-      "黄瓜洗净拍碎，切成段",
-      "加入蒜末、小米辣、盐腌制5分钟",
-      "加入生抽、香醋、白糖调味",
-      "淋入香油，撒上香菜",
-      "搅拌均匀即可食用"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 14,
-    name: "番茄炒蛋",
-    category: ["炒菜"],
-    price: 18.00,
-    image: "",
-    description: "最简单也最经典的家常菜番茄炒蛋，鸡蛋嫩滑，番茄酸甜入味，做法简单，营养均衡，老少皆宜。",
-    ingredients: ["番茄", "鸡蛋", "葱", "盐", "白糖", "食用油"],
-    steps: [
-      "鸡蛋打散，加少许盐搅匀",
-      "番茄切块，葱切葱花",
-      "锅中放油，炒熟鸡蛋盛出",
-      "锅中留底油，放入番茄翻炒至出汁",
-      "加少许白糖提鲜，盐调味",
-      "倒入炒好的鸡蛋翻炒均匀",
-      "撒葱花即可出锅"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 15,
-    name: "红烧肉",
-    category: ["红烧"],
-    price: 58.00,
-    image: "https://raw.githubusercontent.com/jyh318/image-jyh/master/img/%E7%BA%A2%E7%83%A7%E8%82%89.jpg",
-    description: "经典的红烧肉，五花肉肥瘦相间，炖至软糯入味，色泽红亮，肥而不腻，入口即化，是家宴必备菜品。",
-    ingredients: ["五花肉", "姜片", "葱段", "八角", "桂皮", "香叶", "生抽", "老抽", "料酒", "冰糖", "盐"],
-    steps: [
-      "五花肉切块，焯水去除血沫",
-      "锅中放少量油，炒化冰糖至枣红色",
-      "放入五花肉翻炒至上色",
-      "加入姜片、葱段、八角、桂皮、香叶爆香",
-      "加料酒、生抽、老抽调味",
-      "加清水没过肉，大火烧开",
-      "转小火慢炖1小时至肉软烂",
-      "加盐调味，大火收汁即可"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 16,
-    name: "清炒时蔬",
-    category: ["炒菜"],
-    price: 22.00,
-    image: "",
-    description: "清爽的清炒时蔬，选用新鲜青菜，简单清炒保留蔬菜的原汁原味，清淡可口，解腻又健康。",
-    ingredients: ["青菜", "蒜", "盐", "食用油", "鸡精"],
-    steps: [
-      "青菜洗净切段，蒜切末",
-      "锅中放油，爆香蒜末",
-      "放入青菜大火快速翻炒",
-      "加盐和少许鸡精调味",
-      "炒至青菜断生即可出锅"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 17,
-    name: "酸辣土豆丝",
-    category: ["炒菜", "凉拌"],
-    price: 18.00,
-    image: "https://raw.githubusercontent.com/jyh318/image-jyh/master/img/%E9%85%B8%E8%BE%A3%E5%9C%9F%E8%B1%86%E4%B8%9D.jpg",
-    description: "经典的酸辣土豆丝，土豆丝脆爽，酸辣开胃，做法简单，是一道非常受欢迎的家常菜。",
-    ingredients: ["土豆", "干辣椒", "醋", "蒜", "葱", "盐", "白糖"],
-    steps: [
-      "土豆切丝，用清水浸泡去除淀粉",
-      "锅中烧水，土豆丝焯水10秒捞出",
-      "锅中放油，爆香干辣椒和蒜末",
-      "放入土豆丝大火翻炒",
-      "加入醋、盐、少许白糖调味",
-      "翻炒均匀，撒葱花即可"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 18,
-    name: "蛋炒饭",
-    category: ["主食", "炒菜"],
-    price: 20.00,
-    image: "https://raw.githubusercontent.com/jyh318/image-jyh/master/img/%E8%9B%8B%E7%82%92%E9%A5%AD.jpg",
-    description: "简单又美味的蛋炒饭，米饭粒粒分明，鸡蛋香嫩，咸香适口，是最经典的家常主食。",
-    ingredients: ["米饭", "鸡蛋", "葱", "盐", "生抽", "食用油"],
-    steps: [
-      "鸡蛋打散，炒熟盛出备用",
-      "锅中放油，放入米饭炒散",
-      "加入炒好的鸡蛋翻炒均匀",
-      "加盐、少许生抽调味",
-      "翻炒至米饭粒粒分明",
-      "撒葱花即可出锅"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 19,
-    name: "酱牛肉",
-    category: ["卤菜"],
-    price: 68.00,
-    image: "https://raw.githubusercontent.com/jyh318/image-jyh/master/img/%E5%8D%A4%E7%89%9B%E8%82%89.jpg",
-    description: "酱香浓郁的酱牛肉，牛肉紧实有嚼劲，卤香入味，切片食用，是佐酒下饭的佳品。",
-    ingredients: ["牛腱子肉", "八角", "桂皮", "香叶", "花椒", "干辣椒", "姜片", "葱段", "生抽", "老抽", "料酒", "盐", "冰糖"],
-    steps: [
-      "牛肉焯水，去除血沫和杂质",
-      "锅中加水，放入所有调料",
-      "加入牛肉，大火烧开",
-      "转小火卤煮2小时",
-      "关火后浸泡4小时以上更入味",
-      "放凉后切片即可食用"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 20,
-    name: "冬瓜排骨汤",
-    category: ["炖菜"],
-    price: 38.00,
-    image: "",
-    description: "清淡鲜美的冬瓜排骨汤，排骨软烂，冬瓜清甜，汤鲜味美，营养丰富，适合全家饮用。",
-    ingredients: ["排骨", "冬瓜", "姜片", "葱段", "盐", "料酒", "白胡椒粉"],
-    steps: [
-      "排骨焯水，去除血沫",
-      "锅中加水，放入排骨、姜片、葱段、料酒",
-      "大火烧开，转小火炖1小时",
-      "冬瓜切块，加入汤中",
-      "继续炖20分钟至冬瓜软烂",
-      "加盐、白胡椒粉调味即可"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 21,
-    name: "蒜蓉粉丝蒸扇贝",
-    category: ["蒸菜"],
-    price: 58.00,
-    image: "https://raw.githubusercontent.com/jyh318/image-jyh/master/img/%E8%92%9C%E8%93%89%E8%92%B8%E6%89%87%E8%B4%9D.jpg",
-    description: "鲜美的蒜蓉粉丝蒸扇贝，扇贝肉嫩，粉丝吸满汤汁，蒜香浓郁，做法简单又美味。",
-    ingredients: ["扇贝", "粉丝", "大蒜", "小米辣", "生抽", "蚝油", "香油", "葱"],
-    steps: [
-      "粉丝泡软，扇贝洗净备用",
-      "大蒜切末，小米辣切圈，葱切花",
-      "爆香蒜末，加入生抽、蚝油调味",
-      "扇贝铺粉丝，淋上蒜蓉酱",
-      "水烧开后蒸8分钟",
-      "撒葱花和小米辣，淋热油即可"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 22,
-    name: "扬州炒饭",
-    category: ["主食", "炒菜"],
-    price: 28.00,
-    image: "",
-    description: "正宗扬州炒饭，米饭粒粒分明，配料丰富，有虾仁、火腿、鸡蛋等，色香味俱全。",
-    ingredients: ["米饭", "鸡蛋", "虾仁", "火腿", "青豆", "玉米粒", "胡萝卜", "葱", "盐", "生抽"],
-    steps: [
-      "鸡蛋炒熟盛出，虾仁焯水",
-      "火腿、胡萝卜切丁",
-      "锅中放油，炒香所有配料",
-      "加入米饭炒散",
-      "放入鸡蛋和虾仁翻炒",
-      "加盐、生抽调味",
-      "撒葱花即可出锅"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 23,
-    name: "凉拌海带丝",
-    category: ["凉拌"],
-    price: 16.00,
-    image: "https://raw.githubusercontent.com/jyh318/image-jyh/master/img/%E5%87%89%E6%8B%8C%E6%B5%B7%E5%B8%A6%E4%B8%9D.jpg",
-    description: "清爽可口的凉拌海带丝，海带丝脆爽，酸辣开胃，是一道非常受欢迎的凉拌小菜。",
-    ingredients: ["海带丝", "蒜末", "小米辣", "生抽", "香醋", "香油", "白糖", "盐", "香菜"],
-    steps: [
-      "海带丝焯水，过凉水沥干",
-      "加入蒜末、小米辣、盐腌制",
-      "加入生抽、香醋、白糖调味",
-      "淋入香油，撒香菜段",
-      "搅拌均匀即可食用"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 24,
-    name: "香菇炖鸡",
-    category: ["炖菜"],
-    price: 48.00,
-    image: "",
-    description: "营养美味的香菇炖鸡，鸡肉软烂入味，香菇吸收了鸡肉的鲜香，汤浓味美，营养丰富。",
-    ingredients: ["鸡肉", "干香菇", "姜片", "葱段", "料酒", "生抽", "盐", "枸杞"],
-    steps: [
-      "鸡肉焯水，去除血沫",
-      "干香菇泡发，保留香菇水",
-      "锅中放鸡肉、姜片、葱段",
-      "加入料酒、生抽和香菇水",
-      "放入香菇，大火烧开",
-      "转小火炖1小时",
-      "加盐调味，放入枸杞即可"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 25,
-    name: "清蒸排骨",
-    category: ["蒸菜"],
-    price: 42.00,
-    image: "",
-    description: "清淡鲜美的清蒸排骨，排骨嫩滑，原汁原味，搭配豆豉和蒜蓉，咸香适口，做法简单。",
-    ingredients: ["排骨", "豆豉", "蒜末", "姜末", "生抽", "料酒", "淀粉", "葱", "盐"],
-    steps: [
-      "排骨焯水，洗净沥干",
-      "加入蒜末、姜末、豆豉",
-      "加生抽、料酒、盐、淀粉腌制20分钟",
-      "水烧开后，大火蒸25分钟",
-      "撒葱花，淋热油即可"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 26,
-    name: "韭菜盒子",
-    category: ["主食"],
-    price: 26.00,
-    image: "",
-    description: "金黄酥脆的韭菜盒子，外皮酥脆，内馅鲜香，韭菜和鸡蛋的完美结合，是经典的家常主食。",
-    ingredients: ["面粉", "韭菜", "鸡蛋", "虾皮", "盐", "香油", "食用油"],
-    steps: [
-      "面粉加水和成面团，醒发30分钟",
-      "鸡蛋炒熟切碎，韭菜切碎",
-      "混合馅料，加虾皮、盐、香油调味",
-      "面团分成小剂子，擀成面皮",
-      "包入馅料，捏成盒子形状",
-      "平底锅放油，煎至两面金黄"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 27,
-    name: "卤鸡爪",
-    category: ["卤菜"],
-    price: 32.00,
-    image: "",
-    description: "软糯入味的卤鸡爪，鸡爪Q弹有嚼劲，卤香浓郁，是追剧、下酒的绝佳小吃。",
-    ingredients: ["鸡爪", "八角", "桂皮", "香叶", "花椒", "姜片", "葱段", "生抽", "老抽", "料酒", "盐", "冰糖"],
-    steps: [
-      "鸡爪剪去指甲，焯水",
-      "锅中加水，放入所有调料",
-      "加入鸡爪，大火烧开",
-      "转小火卤煮40分钟",
-      "关火后浸泡2小时更入味",
-      "捞出放凉即可食用"
-    ],
-    isSpecial: false
-  },
-  {
-    id: 28,
-    name: "皮蛋瘦肉粥",
-    category: ["主食"],
-    price: 22.00,
-    image: "",
-    description: "绵密鲜香的皮蛋瘦肉粥，大米熬至软烂，搭配嫩滑的瘦肉和Q弹的皮蛋，营养又美味。",
-    ingredients: ["大米", "瘦肉", "皮蛋", "姜", "葱", "盐", "白胡椒粉", "香油"],
-    steps: [
-      "大米淘洗干净，提前浸泡30分钟",
-      "瘦肉切丝，用盐、淀粉腌制",
-      "皮蛋切丁，姜切丝，葱切花",
-      "锅中加水烧开，放入大米和姜丝",
-      "大火烧开转小火熬30分钟",
-      "加入瘦肉丝和皮蛋丁",
-      "继续熬10分钟，加盐调味",
-      "撒葱花、白胡椒粉，淋香油"
-    ],
-    isSpecial: false
-  },
-
-    ];
-    
+    let foods = [];
+    const sampleJsonUrl = 'https://raw.githubusercontent.com/jyh318/wangxxcaidan/0dfdab81c1a29da3269fd30ce344b99806f9bd4d/foods.json';
+    // 使用Fetch API获取JSON文件
+    fetch(sampleJsonUrl)
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        // 将数据存入数组
+        foods = Array.isArray(data) ? data : [data];
+        console.log('成功获取菜品数据:', foods);
+        initPage();
+      })
+      .catch(error => {
+        // 处理错误
+        console.error('获取菜品数据失败:', error);
+        foods = [];
+        initPage();
+      });
     // ==================== 全局变量定义 ====================
     // 当前选中的分类
     let currentCategory = 'all';
@@ -1407,7 +954,7 @@
     let currentSearch = '';
     // 购物车数据，key为菜品ID，value为数量
     let cart = {};
-    
+
     // ==================== 页面初始化 ====================
     function initPage() {
       renderFoodGrid();
@@ -1415,7 +962,7 @@
       setupEventListeners();
       updateCartFloat();
     }
-    
+
     // ==================== 菜品网格渲染 ====================
     function renderFoodGrid() {
       const foodGrid = document.getElementById('foodGrid');
@@ -1426,7 +973,18 @@
       if (currentCategory !== 'all' || currentSearch !== '') {
         todaySpecial.style.display = 'none';
       } else {
-        todaySpecial.style.display = 'block';
+        todaySpecial.style.display = foods.length > 0 ? 'block' : 'none';
+      }
+      
+      // 检查是否有菜品数据
+      if (foods.length === 0) {
+        // 显示无数据提示
+        foodGrid.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <p class="text-gray-500">暂无菜品数据</p>
+          </div>
+        `;
+        return;
       }
       
       // 根据分类和搜索关键词筛选菜品
@@ -1440,6 +998,17 @@
         // 排除今日推荐菜品
         return matchesCategory && matchesSearch && !food.isSpecial;
       });
+      
+      // 检查筛选后是否有菜品
+      if (filteredFoods.length === 0) {
+        // 显示无匹配数据提示
+        foodGrid.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <p class="text-gray-500">没有找到匹配的菜品</p>
+          </div>
+        `;
+        return;
+      }
       
       // 渲染每个菜品卡片
       filteredFoods.forEach(food => {
@@ -1491,11 +1060,19 @@
         });
       });
     }
-    
+
     // ==================== 今日推荐渲染 ====================
     function renderTodaySpecial() {
       // 查找今日推荐菜品，如果没有则使用第一个菜品
       const specialFood = foods.find(food => food.isSpecial) || foods[0];
+      
+      // 检查是否有菜品数据
+      if (!specialFood) {
+        console.warn('没有菜品数据');
+        // 隐藏今日推荐区域
+        document.getElementById('todaySpecial').style.display = 'none';
+        return;
+      }
       
       // 更新今日推荐卡片内容
       document.getElementById('specialImage').src = specialFood.image;
@@ -1514,7 +1091,7 @@
       // 绑定查看详情按钮事件
       document.getElementById('viewSpecialBtn').onclick = () => showFoodDetail(specialFood.id);
     }
-    
+
     // ==================== 事件监听器设置 ====================
     function setupEventListeners() {
       // 分类按钮点击事件
@@ -1530,73 +1107,73 @@
           renderFoodGrid();
         });
       });
-      
+
       // 搜索框输入事件
       document.getElementById('searchInput').addEventListener('input', (e) => {
         currentSearch = e.target.value;
         renderFoodGrid();
       });
-      
+
       // 编辑按钮点击事件
       document.getElementById('editBtn').addEventListener('click', () => {
         showEditModal();
       });
-      
+
       // 关闭菜品详情模态框
       document.getElementById('closeModal').addEventListener('click', () => {
         hideFoodModal();
       });
-      
+
       // 关闭编辑模态框
       document.getElementById('closeEditModal').addEventListener('click', () => {
         hideEditModal();
       });
-      
+
       // 关闭菜品表单模态框
       document.getElementById('closeFoodFormModal').addEventListener('click', () => {
         hideFoodFormModal();
       });
-      
+
       // 关闭购物车模态框
       document.getElementById('closeCartModal').addEventListener('click', () => {
         hideCartModal();
       });
-      
+
       // 取消菜品表单
       document.getElementById('cancelFoodForm').addEventListener('click', () => {
         hideFoodFormModal();
       });
-      
+
       // 提交菜品表单
       document.getElementById('foodForm').addEventListener('submit', (e) => {
         e.preventDefault();
         saveFood();
       });
-      
+
       // 添加菜品按钮
       document.getElementById('addFoodBtn').addEventListener('click', () => {
         showFoodFormModal();
       });
-      
+
       // 点击模态框背景关闭模态框
       document.getElementById('foodModal').addEventListener('click', (e) => {
         if (e.target === document.getElementById('foodModal')) {
           hideFoodModal();
         }
       });
-      
+
       document.getElementById('editModal').addEventListener('click', (e) => {
         if (e.target === document.getElementById('editModal')) {
           hideEditModal();
         }
       });
-      
+
       document.getElementById('foodFormModal').addEventListener('click', (e) => {
         if (e.target === document.getElementById('foodFormModal')) {
           hideFoodFormModal();
         }
       });
-      
+
       // 点菜按钮点击事件（委托）
       document.addEventListener('click', (e) => {
         if (e.target.closest('.order-btn')) {
@@ -1606,32 +1183,32 @@
           updateCart(foodId, action);
         }
       });
-      
+
       // 购物车浮窗点击事件
       document.getElementById('cartFloat').addEventListener('click', () => {
         showCartModal();
       });
-      
+
       // 购物车模态框背景点击关闭
       document.getElementById('cartModal').addEventListener('click', (e) => {
         if (e.target === document.getElementById('cartModal')) {
           hideCartModal();
         }
       });
-      
+
       // 支付按钮点击事件
       document.getElementById('payBtn').addEventListener('click', () => {
         handlePayment();
       });
     }
-    
+
     // ==================== 购物车管理 ====================
     function updateCart(foodId, action) {
       // 初始化菜品数量
       if (!cart[foodId]) {
         cart[foodId] = 0;
       }
-      
+
       // 增加或减少数量
       if (action === 'plus') {
         cart[foodId]++;
@@ -1642,13 +1219,13 @@
           delete cart[foodId];
         }
       }
-      
+
       // 只更新当前卡片的数量显示，避免重新渲染所有卡片
       updateCardQuantity(foodId);
       // 更新购物车浮窗
       updateCartFloat();
     }
-    
+
     // ==================== 卡片数量更新 ====================
     function updateCardQuantity(foodId) {
       // 查找对应的菜品卡片
@@ -1661,17 +1238,17 @@
         }
       }
     }
-    
+
     // ==================== 购物车浮窗更新 ====================
     function updateCartFloat() {
       // 计算购物车总数量
       const totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
       const cartFloat = document.getElementById('cartFloat');
       const cartCount = document.getElementById('cartCount');
-      
+
       // 更新数量显示
       cartCount.textContent = totalItems;
-      
+
       // 根据购物车是否为空控制显示/隐藏
       if (totalItems > 0) {
         cartFloat.classList.add('show');
@@ -1681,24 +1258,24 @@
         cartFloat.classList.remove('show');
       }
     }
-    
+
     // ==================== 购物车模态框显示 ====================
     function showCartModal() {
       const cartModal = document.getElementById('cartModal');
       const cartItems = document.getElementById('cartItems');
       const cartTotal = document.getElementById('cartTotal');
-      
+
       // 清空购物车列表
       cartItems.innerHTML = '';
       let totalPrice = 0;
-      
+
       // 遍历购物车中的菜品
       Object.entries(cart).forEach(([foodId, quantity]) => {
         const food = foods.find(f => f.id === parseInt(foodId));
         if (food) {
           const itemTotal = food.price * quantity;
           totalPrice += itemTotal;
-          
+
           // 创建购物车项HTML
           const cartItem = document.createElement('div');
           cartItem.className = 'flex justify-between items-center p-4 border-b border-gray-200';
@@ -1717,12 +1294,12 @@
           cartItems.appendChild(cartItem);
         }
       });
-      
+
       // 更新总价
       cartTotal.textContent = `¥${totalPrice.toFixed(2)}`;
       cartModal.classList.add('active');
       lucide.createIcons();
-      
+
       // 绑定删除按钮事件
       document.querySelectorAll('.remove-cart-item').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -1732,7 +1309,7 @@
         });
       });
     }
-    
+
     // ==================== 购物车移除 ====================
     function removeFromCart(foodId) {
       // 从购物车删除菜品
@@ -1744,32 +1321,32 @@
       // 刷新购物车模态框
       showCartModal();
     }
-    
+
     // ==================== 订单数据接口 ====================
     let orderData = null;
-    
+
     // 获取订单数据的接口
     function getOrderData() {
       return orderData;
     }
-    
+
     // ==================== 支付处理 ====================
     function handlePayment() {
       if (Object.keys(cart).length === 0) {
         alert('购物车为空，请先添加菜品');
         return;
       }
-      
+
       // 构建订单数据
       const items = [];
       let totalPrice = 0;
-      
+
       Object.entries(cart).forEach(([foodId, quantity]) => {
         const food = foods.find(f => f.id === parseInt(foodId));
         if (food) {
           const itemTotal = food.price * quantity;
           totalPrice += itemTotal;
-          
+
           items.push({
             id: food.id,
             name: food.name,
@@ -1780,7 +1357,7 @@
           });
         }
       });
-      
+
       // 创建订单JSON对象
       orderData = {
         orderId: Date.now(),
@@ -1788,17 +1365,17 @@
         totalPrice: totalPrice,
         orderTime: new Date().toISOString()
       };
-      
+
       console.log('订单数据已生成，可通过 getOrderData() 获取:', orderData);
-      
+
       // 显示订单信息
       alert(`订单创建成功！\n订单号：${orderData.orderId}\n总金额：¥${totalPrice.toFixed(2)}\n\n订单数据已准备就绪，可通过 getOrderData() 获取`);
-      
+
       // 清空购物车
       cart = {};
       updateCartFloat();
       hideCartModal();
-      
+
       // 更新所有卡片数量显示
       document.querySelectorAll('.food-card').forEach(card => {
         const quantitySpan = card.querySelector('.order-btn .quantity');
@@ -1807,29 +1384,32 @@
         }
       });
     }
-    
+
     // ==================== 模态框隐藏 ====================
     function hideFoodModal() {
       document.getElementById('foodModal').classList.remove('active');
     }
-    
+
     function hideEditModal() {
       document.getElementById('editModal').classList.remove('active');
     }
-    
+
     function hideFoodFormModal() {
       document.getElementById('foodFormModal').classList.remove('active');
     }
-    
+
     function hideCartModal() {
       document.getElementById('cartModal').classList.remove('active');
     }
-    
+
     // ==================== 菜品详情显示 ====================
     function showFoodDetail(foodId) {
       // 查找菜品数据
       const food = foods.find(f => f.id === foodId);
-      if (!food) return;
+      if (!food) {
+        console.warn('找不到菜品数据:', foodId);
+        return;
+      }
       
       // 更新详情弹窗内容
       document.getElementById('modalName').textContent = food.name;
@@ -1848,35 +1428,39 @@
       // 渲染主要用料列表
       const ingredientsList = document.getElementById('modalIngredients');
       ingredientsList.innerHTML = '';
-      food.ingredients.forEach(ingredient => {
-        const li = document.createElement('li');
-        li.textContent = ingredient;
-        ingredientsList.appendChild(li);
-      });
+      if (food.ingredients && Array.isArray(food.ingredients)) {
+        food.ingredients.forEach(ingredient => {
+          const li = document.createElement('li');
+          li.textContent = ingredient;
+          ingredientsList.appendChild(li);
+        });
+      }
       
       // 渲染制作过程列表
       const stepsList = document.getElementById('modalSteps');
       stepsList.innerHTML = '';
-      food.steps.forEach(step => {
-        const li = document.createElement('li');
-        li.textContent = step;
-        stepsList.appendChild(li);
-      });
+      if (food.steps && Array.isArray(food.steps)) {
+        food.steps.forEach(step => {
+          const li = document.createElement('li');
+          li.textContent = step;
+          stepsList.appendChild(li);
+        });
+      }
       
       // 显示详情弹窗
       document.getElementById('foodModal').classList.add('active');
     }
-    
+
     // ==================== 编辑模态框显示 ====================
     function showEditModal() {
       const foodList = document.getElementById('foodList');
       foodList.innerHTML = '';
-      
+
       // 渲染所有菜品列表
       foods.forEach(food => {
         const foodItem = document.createElement('div');
         foodItem.className = 'glass rounded-xl p-4 flex justify-between items-center';
-        
+
         // 只保留菜品名称和价格
         foodItem.innerHTML = `
           <div>
@@ -1892,13 +1476,13 @@
             </button>
           </div>
         `;
-        
+
         foodList.appendChild(foodItem);
       });
-      
+
       // 重新渲染Lucide图标
       lucide.createIcons();
-      
+
       // 绑定编辑按钮事件
       document.querySelectorAll('.edit-food-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1906,7 +1490,7 @@
           editFood(foodId);
         });
       });
-      
+
       // 绑定删除按钮事件
       document.querySelectorAll('.delete-food-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1914,22 +1498,22 @@
           deleteFood(foodId);
         });
       });
-      
+
       // 显示编辑模态框
       document.getElementById('editModal').classList.add('active');
     }
-    
+
     // ==================== 菜品表单模态框显示 ====================
     function showFoodFormModal(foodId = null) {
       const formTitle = document.getElementById('formTitle');
       const foodForm = document.getElementById('foodForm');
       const foodIdInput = document.getElementById('foodId');
-      
+
       if (foodId) {
         // 编辑现有菜品
         formTitle.textContent = '编辑菜品';
         const food = foods.find(f => f.id === foodId);
-        
+
         foodIdInput.value = food.id;
         document.getElementById('foodName').value = food.name;
         // 支持多个分类标签，用逗号连接
@@ -1946,20 +1530,20 @@
         foodForm.reset();
         foodIdInput.value = '';
       }
-      
+
       // 显示表单模态框
       document.getElementById('foodFormModal').classList.add('active');
     }
-    
+
     // ==================== 菜品保存 ====================
     function saveFood() {
       const foodIdInput = document.getElementById('foodId');
       const foodId = foodIdInput.value ? parseInt(foodIdInput.value) : null;
-      
+
       // 获取分类值，支持多个分类（逗号分隔）
       const categoryValue = document.getElementById('foodCategory').value;
       const categories = categoryValue.includes(',') ? categoryValue.split(',').map(c => c.trim()) : [categoryValue];
-      
+
       // 构建菜品数据
       const foodData = {
         name: document.getElementById('foodName').value,
@@ -1971,45 +1555,45 @@
         steps: document.getElementById('foodSteps').value.split(';').map(s => s.trim()),
         isSpecial: document.getElementById('isSpecial').checked
       };
-      
+
       if (foodId) {
         // 更新现有菜品
         const foodIndex = foods.findIndex(f => f.id === foodId);
-        
+
         // 如果设为今日推荐，取消其他菜品的推荐状态
         if (foodData.isSpecial) {
           foods.forEach(f => f.isSpecial = false);
         }
-        
+
         foods[foodIndex] = { ...foods[foodIndex], ...foodData };
       } else {
         // 添加新菜品
         const newId = Math.max(...foods.map(f => f.id), 0) + 1;
-        
+
         // 如果设为今日推荐，取消其他菜品的推荐状态
         if (foodData.isSpecial) {
           foods.forEach(f => f.isSpecial = false);
         }
-        
+
         foods.push({
           id: newId,
           ...foodData
         });
       }
-      
+
       // 更新页面显示
       renderFoodGrid();
       renderTodaySpecial();
       hideFoodFormModal();
       hideEditModal();
     }
-    
+
     // ==================== 菜品编辑 ====================
     function editFood(foodId) {
       hideEditModal();
       showFoodFormModal(foodId);
     }
-    
+
     // ==================== 菜品删除 ====================
     function deleteFood(foodId) {
       if (confirm('确定要删除这道菜品吗？')) {
@@ -2019,7 +1603,7 @@
         showEditModal();
       }
     }
-    
+
     // ==================== 徽章样式获取 ====================
     function getBadgeClass(category) {
       switch (category) {
@@ -2038,9 +1622,10 @@
         default: return 'badge-pink';
       }
     }
-    
+
     // ==================== 页面初始化执行 ====================
     initPage();
   </script>
 </body>
+
 </html>
