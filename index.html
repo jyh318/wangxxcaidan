@@ -939,12 +939,14 @@
         // 将数据存入数组
         foods = Array.isArray(data) ? data : [data];
         console.log('成功获取菜品数据:', foods);
-        initPage();
       })
       .catch(error => {
         // 处理错误
         console.error('获取菜品数据失败:', error);
         foods = [];
+      })
+      .finally(() => {
+        // 无论成功还是失败，只调用一次 initPage
         initPage();
       });
     // ==================== 全局变量定义 ====================
@@ -1581,11 +1583,31 @@
         });
       }
 
+      // 将更新后的 foods 数组写入 foods.json 文件
+      saveFoodsToJson();
+
       // 更新页面显示
       renderFoodGrid();
       renderTodaySpecial();
       hideFoodFormModal();
       hideEditModal();
+    }
+
+    // ==================== 保存 foods 到 JSON 文件 ====================
+    function saveFoodsToJson() {
+      // 创建 Blob 对象
+      const blob = new Blob([JSON.stringify(foods, null, 2)], { type: 'application/json' });
+      // 创建 URL
+      const url = URL.createObjectURL(blob);
+      // 创建下载链接
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'foods.json';
+      // 模拟点击下载
+      a.click();
+      // 释放 URL
+      URL.revokeObjectURL(url);
+      console.log('Foods data saved to foods.json');
     }
 
     // ==================== 菜品编辑 ====================
