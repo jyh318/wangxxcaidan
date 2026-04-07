@@ -1595,19 +1595,63 @@
 
     // ==================== 保存 foods 到 JSON 文件 ====================
     function saveFoodsToJson() {
-      // 创建 Blob 对象
-      const blob = new Blob([JSON.stringify(foods, null, 2)], { type: 'application/json' });
-      // 创建 URL
-      const url = URL.createObjectURL(blob);
-      // 创建下载链接
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'foods.json';
-      // 模拟点击下载
-      a.click();
-      // 释放 URL
-      URL.revokeObjectURL(url);
-      console.log('Foods data saved to foods.json');
+      // 生成 JSON 字符串
+      const jsonString = JSON.stringify(foods, null, 2);
+      
+      // 复制到剪贴板
+      navigator.clipboard.writeText(jsonString)
+        .then(() => {
+          console.log('Foods data copied to clipboard');
+          // 显示更新提示
+          showUpdatePrompt();
+        })
+        .catch(err => {
+          console.error('Failed to copy to clipboard:', err);
+          // 如果复制失败，仍然下载文件
+          const blob = new Blob([jsonString], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'foods.json';
+          a.click();
+          URL.revokeObjectURL(url);
+          // 显示更新提示
+          showUpdatePrompt();
+        });
+    }
+
+    // ==================== 显示更新提示 ====================
+    function showUpdatePrompt() {
+      // 创建提示元素
+      const prompt = document.createElement('div');
+      prompt.className = 'fixed top-4 right-4 bg-blue-500 text-white p-4 rounded-lg shadow-lg z-50 flex items-center gap-3';
+      prompt.innerHTML = `
+        <i data-lucide="info" class="w-5 h-5"></i>
+        <div>
+          <p class="font-medium">菜品保存成功！</p>
+          <p class="text-sm opacity-90">JSON 数据已复制到剪贴板</p>
+          <p class="text-xs opacity-80 mt-1">请运行：node importGit.js '{粘贴JSON数据}'</p>
+        </div>
+        <button class="close-prompt ml-2 text-white hover:opacity-80">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      `;
+      
+      // 添加到页面
+      document.body.appendChild(prompt);
+      
+      // 初始化 Lucide 图标
+      lucide.createIcons();
+      
+      // 关闭按钮事件
+      prompt.querySelector('.close-prompt').addEventListener('click', () => {
+        prompt.remove();
+      });
+      
+      // 3秒后自动关闭
+      setTimeout(() => {
+        prompt.remove();
+      }, 3000);
     }
 
     // ==================== 菜品编辑 ====================
