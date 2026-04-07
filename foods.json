@@ -263,7 +263,7 @@
     "name": "番茄炒蛋",
     "category": ["炒菜"],
     "price": 12.00,
-    "image": "../jyh318/image-jyh/img/%E7%95%AA%E8%8C%84%E7%82%92%E8%9B%8B.jpg",
+    "image": "/jyh318/image-jyh/img/%E7%95%AA%E8%8C%84%E7%82%92%E8%9B%8B.jpg",
     "description": "最简单也最经典的家常菜番茄炒蛋，鸡蛋嫩滑，番茄酸甜入味，做法简单，营养均衡，老少皆宜。",
     "ingredients": ["番茄", "鸡蛋", "葱", "盐", "白糖", "食用油"],
     "steps": [
